@@ -3,7 +3,14 @@ import 'package:http/http.dart' as http;
 import '../models/item_pca.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8000';
+  static String get baseUrl {
+    final hostname = Uri.base.host;
+    if (hostname == 'localhost' || hostname == '127.0.0.1' || hostname.isEmpty) {
+      return 'http://localhost:8000';
+    } else {
+      return 'http://172.23.6.109:8000';
+    }
+  }
   static String? currentUserRole;
   static String? currentUsername;
 
