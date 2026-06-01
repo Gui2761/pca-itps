@@ -19,17 +19,11 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> init() async {
-    final prefs = await SharedPreferences.getInstance();
-    final username = prefs.getString('username');
-    final password = prefs.getString('password');
-    final isGuest = prefs.getBool('isGuest') ?? false;
-
-    if (isGuest) {
-      loginAsGuest();
-    } else if (username != null && password != null) {
-      await login(username, password);
-    }
-    
+    // Sempre começa sem autenticação — exibe a tela de login.
+    // NÃO tenta re-autenticar automaticamente com credenciais salvas.
+    // Isso evita travamentos quando a API não responde e garante
+    // que o usuário sempre passe pela tela de login ao abrir o sistema.
+    _currentUser = null;
     _syncApiHeaders();
     _isInitialized = true;
     notifyListeners();
@@ -41,7 +35,7 @@ class AuthService extends ChangeNotifier {
         Uri.parse('${ApiService.baseUrl}/api/pca/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'username': username, 'password': password}),
-      );
+      ).timeout(const Duration(seconds: 8));
 
       if (response.statusCode == 200) {
         final userData = jsonDecode(response.body);
@@ -53,11 +47,6 @@ class AuthService extends ChangeNotifier {
           editLocked: userData['edit_locked'] ?? false,
         );
         
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('username', username);
-        await prefs.setString('password', password);
-        await prefs.setBool('isGuest', false);
-
         _syncApiHeaders();
         notifyListeners();
         return true;
@@ -76,12 +65,6 @@ class AuthService extends ChangeNotifier {
       role: UserRole.viewer,
     );
     
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool('isGuest', true);
-      prefs.remove('username');
-      prefs.remove('password');
-    });
-    
     _syncApiHeaders();
     notifyListeners();
   }
@@ -97,13 +80,6 @@ class AuthService extends ChangeNotifier {
 
   void logout() {
     _currentUser = null;
-    
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('username');
-      prefs.remove('password');
-      prefs.remove('isGuest');
-    });
-    
     _syncApiHeaders();
     notifyListeners();
   }
