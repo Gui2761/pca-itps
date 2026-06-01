@@ -1,4 +1,5 @@
-import 'dart:io';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -394,11 +395,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // EXPORTAR PARA EXCEL (CSV)
+  // EXPORTAR PARA EXCEL (CSV) — versão Web (download via navegador)
   Future<void> _exportToExcel() async {
     try {
       final buffer = StringBuffer();
-      // Cabeçalho do CSV
       buffer.writeln('ID;Categoria;Planilha;Laboratório;Setor;Recurso;Código;Descrição;Unidade;Quantidade;Valor Unitário;Valor Total');
       
       for (var item in _itens) {
@@ -418,18 +418,18 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
 
-      final dir = Directory('C:\\Users\\gnsilva\\Downloads');
-      if (!await dir.exists()) {
-        await dir.create(recursive: true);
-      }
-
-      final file = File('${dir.path}\\pca_export_$_selectedYear.csv');
-      await file.writeAsString(buffer.toString());
+      final fileName = 'pca_export_$_selectedYear.csv';
+      final blob = html.Blob([buffer.toString()], 'text/csv;charset=utf-8');
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute('download', fileName)
+        ..click();
+      html.Url.revokeObjectUrl(url);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Planilha exportada com sucesso em: ${file.path}', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            content: Text('Planilha $fileName baixada com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -450,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // EXPORTAR RELATÓRIO PDF (TXT/Formatado)
+  // EXPORTAR RELATÓRIO PDF (TXT/Formatado) — versão Web
   Future<void> _exportToPDF() async {
     try {
       final buffer = StringBuffer();
@@ -483,14 +483,18 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       buffer.writeln('\n========================================================================');
 
-      final dir = Directory('C:\\Users\\gnsilva\\Downloads');
-      final file = File('${dir.path}\\relatorio_pca_$_selectedYear.txt');
-      await file.writeAsString(buffer.toString());
+      final fileName = 'relatorio_pca_$_selectedYear.txt';
+      final blob = html.Blob([buffer.toString()], 'text/plain;charset=utf-8');
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute('download', fileName)
+        ..click();
+      html.Url.revokeObjectUrl(url);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Relatório texto exportado com sucesso em: ${file.path}', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            content: Text('Relatório $fileName baixado com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
