@@ -69,6 +69,20 @@ def check_user_lock(username: str):
     finally:
         conn.close()
 
+def check_user_individual_release(username: str) -> bool:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT individual_release FROM contratos.users WHERE username = %s", (username,))
+        row = cursor.fetchone()
+        if row and row['individual_release']:
+            return True
+        return False
+    except Exception:
+        return False
+    finally:
+        conn.close()
+
 def init_db_tables():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -119,6 +133,7 @@ def init_db_tables():
         # Autopopular usuários padrão dos setores e criar tabela de configurações
         try:
             cursor.execute("ALTER TABLE contratos.users ADD COLUMN IF NOT EXISTS edit_locked BOOLEAN DEFAULT FALSE;")
+            cursor.execute("ALTER TABLE contratos.users ADD COLUMN IF NOT EXISTS individual_release BOOLEAN DEFAULT FALSE;")
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS pca.configuracoes (
                     id INT PRIMARY KEY,
@@ -279,7 +294,11 @@ def listar_itens(busca: Optional[str] = None, pasta: Optional[str] = None, labor
 @app.post("/api/pca", status_code=201)
 def criar_item(input_data: ItemPCAInput, x_user_role: Optional[str] = Header(None), x_username: Optional[str] = Header(None)):
     if x_user_role != "admin":
-        check_global_lock()
+        is_released = False
+        if x_username:
+            is_released = check_user_individual_release(x_username)
+        if not is_released:
+            check_global_lock()
         if x_username:
             check_user_lock(x_username)
 
@@ -324,7 +343,11 @@ def criar_item(input_data: ItemPCAInput, x_user_role: Optional[str] = Header(Non
 @app.put("/api/pca/{id}")
 def atualizar_item(id: int, input_data: ItemPCAInput, x_user_role: Optional[str] = Header(None), x_username: Optional[str] = Header(None)):
     if x_user_role != "admin":
-        check_global_lock()
+        is_released = False
+        if x_username:
+            is_released = check_user_individual_release(x_username)
+        if not is_released:
+            check_global_lock()
         if x_username:
             check_user_lock(x_username)
 
@@ -376,7 +399,11 @@ def atualizar_item(id: int, input_data: ItemPCAInput, x_user_role: Optional[str]
 @app.delete("/api/pca/{id}")
 def deletar_item(id: int, x_user_role: Optional[str] = Header(None), x_username: Optional[str] = Header(None)):
     if x_user_role != "admin":
-        check_global_lock()
+        is_released = False
+        if x_username:
+            is_released = check_user_individual_release(x_username)
+        if not is_released:
+            check_global_lock()
         if x_username:
             check_user_lock(x_username)
 
@@ -431,7 +458,7 @@ def list_users():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, username, name, role, edit_locked FROM contratos.users ORDER BY id DESC")
+        cursor.execute("SELECT id, username, name, role, edit_locked, individual_release FROM contratos.users ORDER BY id DESC")
         users = [dict(r) for r in cursor.fetchall()]
         conn.close()
         return users
@@ -481,6 +508,7 @@ class UserUpdate(BaseModel):
     name: str
     role: str
     edit_locked: Optional[bool] = False
+    individual_release: Optional[bool] = False
     password: Optional[str] = None
 
 @app.put("/api/pca/users/{id}")
@@ -490,13 +518,13 @@ def update_user(id: int, u: UserUpdate):
         cursor = conn.cursor()
         if u.password and u.password.strip():
             cursor.execute(
-                "UPDATE contratos.users SET username = %s, name = %s, role = %s, edit_locked = %s, password = %s WHERE id = %s",
-                (u.username, u.name, u.role, u.edit_locked, u.password, id)
+                "UPDATE contratos.users SET username = %s, name = %s, role = %s, edit_locked = %s, individual_release = %s, password = %s WHERE id = %s",
+                (u.username, u.name, u.role, u.edit_locked, u.individual_release, u.password, id)
             )
         else:
             cursor.execute(
-                "UPDATE contratos.users SET username = %s, name = %s, role = %s, edit_locked = %s WHERE id = %s",
-                (u.username, u.name, u.role, u.edit_locked, id)
+                "UPDATE contratos.users SET username = %s, name = %s, role = %s, edit_locked = %s, individual_release = %s WHERE id = %s",
+                (u.username, u.name, u.role, u.edit_locked, u.individual_release, id)
             )
         conn.commit()
         affected = cursor.rowcount

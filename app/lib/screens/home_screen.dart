@@ -536,7 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     final user = _authService.currentUser!;
-    if (!user.isAdmin && _currentView == 'dashboard') {
+    if (!user.isAdmin && user.role != UserRole.viewer && _currentView == 'dashboard') {
       _currentView = 'list';
     }
     final isGuest = user.isViewer || (!user.isAdmin && !_isGloballyReleased);
@@ -729,7 +729,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 12),
           
-          if (user.isAdmin)
+          if (user.isAdmin || user.role == UserRole.viewer)
             _buildSidebarButton(
               label: 'Dashboard BI',
               isSelected: _currentView == 'dashboard',
@@ -950,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Row(
           children: [
-            if (!user.isAdmin && !user.editLocked) ...[
+            if (!user.isAdmin && !user.editLocked && user.role != UserRole.viewer) ...[
               ElevatedButton.icon(
                 onPressed: () => _confirmFinalizePlanning(user),
                 icon: const Icon(Icons.check_circle_outline_rounded, size: 20, color: Color(0xFF10B981)),

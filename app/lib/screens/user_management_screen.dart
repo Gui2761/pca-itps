@@ -148,6 +148,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     final passwordCtrl = TextEditingController();
     String selectedRole = user['role'] ?? 'viewer';
     bool editLocked = user['edit_locked'] ?? false;
+    bool individualRelease = user['individual_release'] ?? false;
 
     final updated = await showDialog<bool>(
       context: context,
@@ -230,6 +231,19 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                             });
                           },
                         ),
+                        const SizedBox(height: 10),
+                        SwitchListTile(
+                          title: Text('Liberação Individual (Pós-Prazo)', style: GoogleFonts.inter(color: Colors.white, fontSize: 14)),
+                          subtitle: Text('Permite que o usuário edite mesmo se o prazo geral estiver expirado.', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 11)),
+                          value: individualRelease,
+                          activeColor: const Color(0xFF10B981),
+                          inactiveTrackColor: const Color(0xFF0B0F19),
+                          onChanged: (val) {
+                            setDialogState(() {
+                              individualRelease = val;
+                            });
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -268,6 +282,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         nameCtrl.text,
         selectedRole,
         editLocked: editLocked,
+        individualRelease: individualRelease,
         password: passwordCtrl.text.isNotEmpty ? passwordCtrl.text : null,
       );
 
@@ -331,6 +346,48 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erro ao atualizar permissão de acesso.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            backgroundColor: const Color(0xFFEF4444),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _toggleUserIndividualRelease(Map<String, dynamic> user) async {
+    setState(() => _isLoading = true);
+    final currentReleased = user['individual_release'] == true;
+    final success = await _apiService.updateUser(
+      user['id'],
+      user['username'],
+      user['name'],
+      user['role'] ?? 'viewer',
+      editLocked: user['edit_locked'] == true,
+      individualRelease: !currentReleased,
+    );
+
+    if (success) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              !currentReleased ? 'Liberação Individual concedida!' : 'Liberação Individual revogada!',
+              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+            ),
+            backgroundColor: const Color(0xFF10B981),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+      _loadUsers();
+    } else {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao atualizar liberação individual.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
             backgroundColor: const Color(0xFFEF4444),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -507,16 +564,30 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                                 const SizedBox(width: 12),
                                                 Builder(
                                                   builder: (context) {
-                                                    final isBlocked = user['edit_locked'] == true || !_isGloballyReleased;
-                                                    final String statusText = user['edit_locked'] == true
-                                                        ? 'Bloqueado (Setor)'
-                                                        : (!_isGloballyReleased ? 'Bloqueado (Geral)' : 'Liberado');
-                                                    final Color badgeColor = isBlocked
-                                                        ? const Color(0xFFEF4444)
-                                                        : const Color(0xFF10B981);
-                                                    final IconData badgeIcon = isBlocked
-                                                        ? Icons.lock_rounded
-                                                        : Icons.lock_open_rounded;
+                                                    final isLocked = user['edit_locked'] == true;
+                                                    final isReleased = user['individual_release'] == true;
+                                                    
+                                                    String statusText;
+                                                    Color badgeColor;
+                                                    IconData badgeIcon;
+
+                                                    if (isLocked) {
+                                                      statusText = 'Terminou (Bloqueado)';
+                                                      badgeColor = const Color(0xFF10B981);
+                                                      badgeIcon = Icons.check_circle_rounded;
+                                                    } else if (isReleased) {
+                                                      statusText = 'Liberado (Individual)';
+                                                      badgeColor = const Color(0xFF8B5CF6);
+                                                      badgeIcon = Icons.vpn_key_rounded;
+                                                    } else if (!_isGloballyReleased) {
+                                                      statusText = 'Bloqueado (Prazo Expirado)';
+                                                      badgeColor = const Color(0xFFEF4444);
+                                                      badgeIcon = Icons.lock_rounded;
+                                                    } else {
+                                                      statusText = 'Em Aberto (Liberado)';
+                                                      badgeColor = const Color(0xFF3B82F6);
+                                                      badgeIcon = Icons.lock_open_rounded;
+                                                    }
 
                                                     return Container(
                                                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -565,6 +636,21 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                                             ? 'Liberar Acesso'
                                                             : 'Bloquear Acesso',
                                                         onPressed: () => _toggleUserAccess(user),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          user['individual_release'] == true
+                                                              ? Icons.key_off_rounded
+                                                              : Icons.key_rounded,
+                                                          color: user['individual_release'] == true
+                                                              ? const Color(0xFF8B5CF6)
+                                                              : const Color(0xFF64748B),
+                                                          size: 20,
+                                                        ),
+                                                        tooltip: user['individual_release'] == true
+                                                            ? 'Revogar Liberação Individual'
+                                                            : 'Conceder Liberação Individual',
+                                                        onPressed: () => _toggleUserIndividualRelease(user),
                                                       ),
                                                     ],
                                                     IconButton(

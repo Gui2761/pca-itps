@@ -177,13 +177,14 @@ class ApiService {
     return false;
   }
 
-  Future<bool> updateUser(int id, String username, String name, String role, {bool editLocked = false, String? password}) async {
+  Future<bool> updateUser(int id, String username, String name, String role, {bool editLocked = false, bool individualRelease = false, String? password}) async {
     try {
       final bodyMap = <String, dynamic>{
         'username': username,
         'name': name,
         'role': role,
         'edit_locked': editLocked,
+        'individual_release': individualRelease,
       };
       if (password != null && password.trim().isNotEmpty) {
         bodyMap['password'] = password;
