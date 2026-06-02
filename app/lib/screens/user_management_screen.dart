@@ -299,6 +299,47 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     }
   }
 
+  Future<void> _toggleUserAccess(Map<String, dynamic> user) async {
+    setState(() => _isLoading = true);
+    final currentLocked = user['edit_locked'] == true;
+    final success = await _apiService.updateUser(
+      user['id'],
+      user['username'],
+      user['name'],
+      user['role'] ?? 'viewer',
+      editLocked: !currentLocked,
+    );
+
+    if (success) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              currentLocked ? 'Acesso do usuário liberado!' : 'Acesso do usuário bloqueado!',
+              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+            ),
+            backgroundColor: const Color(0xFF10B981),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+      _loadUsers();
+    } else {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao atualizar permissão de acesso.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            backgroundColor: const Color(0xFFEF4444),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -509,6 +550,23 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                               : Row(
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
+                                                    if (user['role'] != 'admin') ...[
+                                                      IconButton(
+                                                        icon: Icon(
+                                                          user['edit_locked'] == true
+                                                              ? Icons.lock_open_rounded
+                                                              : Icons.lock_rounded,
+                                                          color: user['edit_locked'] == true
+                                                              ? const Color(0xFF10B981)
+                                                              : const Color(0xFFF59E0B),
+                                                          size: 20,
+                                                        ),
+                                                        tooltip: user['edit_locked'] == true
+                                                            ? 'Liberar Acesso'
+                                                            : 'Bloquear Acesso',
+                                                        onPressed: () => _toggleUserAccess(user),
+                                                      ),
+                                                    ],
                                                     IconButton(
                                                       icon: const Icon(Icons.edit_rounded, color: Color(0xFF3B82F6), size: 20),
                                                       tooltip: 'Editar Conta',

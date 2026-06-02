@@ -1,5 +1,4 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -418,18 +417,17 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
 
-      final fileName = 'pca_export_$_selectedYear.csv';
-      final blob = html.Blob([buffer.toString()], 'text/csv;charset=utf-8');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute('download', fileName)
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      final dir = Directory('${Platform.environment['USERPROFILE']}\\Downloads');
+      if (!await dir.exists()) {
+        await dir.create(recursive: true);
+      }
+      final file = File('${dir.path}\\pca_export_$_selectedYear.csv');
+      await file.writeAsString(buffer.toString());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Planilha $fileName baixada com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            content: Text('Planilha exportada com sucesso em: ${file.path}', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -483,18 +481,14 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       buffer.writeln('\n========================================================================');
 
-      final fileName = 'relatorio_pca_$_selectedYear.txt';
-      final blob = html.Blob([buffer.toString()], 'text/plain;charset=utf-8');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute('download', fileName)
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      final dir = Directory('${Platform.environment['USERPROFILE']}\\Downloads');
+      final file = File('${dir.path}\\relatorio_pca_$_selectedYear.txt');
+      await file.writeAsString(buffer.toString());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Relatório $fileName baixado com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            content: Text('Relatório exportado com sucesso em: ${file.path}', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
