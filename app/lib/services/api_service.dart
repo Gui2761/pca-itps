@@ -340,4 +340,38 @@ class ApiService {
     }
     return false;
   }
+
+  // --- LOGS DE AUDITORIA ---
+  Future<List<Map<String, dynamic>>> fetchLogs() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/pca/logs'),
+        headers: {
+          if (currentUserRole != null) 'X-User-Role': currentUserRole!,
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return List<Map<String, dynamic>>.from(data['logs'] ?? []);
+      }
+    } catch (e) {
+      print('Erro ao buscar logs: $e');
+    }
+    return [];
+  }
+
+  Future<bool> clearLogs() async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl/api/pca/logs'),
+        headers: {
+          if (currentUserRole != null) 'X-User-Role': currentUserRole!,
+        },
+      );
+      if (response.statusCode == 200) return true;
+    } catch (e) {
+      print('Erro ao limpar logs: $e');
+    }
+    return false;
+  }
 }

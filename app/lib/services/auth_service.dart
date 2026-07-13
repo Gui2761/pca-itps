@@ -45,6 +45,7 @@ class AuthService extends ChangeNotifier {
           name: userData['name'],
           role: _mapRole(userData['role']),
           editLocked: userData['edit_locked'] ?? false,
+          individualRelease: userData['individual_release'] ?? false,
         );
         
         _syncApiHeaders();

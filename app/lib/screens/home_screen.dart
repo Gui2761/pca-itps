@@ -13,6 +13,7 @@ import 'login_screen.dart';
 import 'dashboard_screen.dart';
 import 'user_management_screen.dart';
 import 'settings_screen.dart';
+import 'logs_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -539,7 +540,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!user.isAdmin && user.role != UserRole.viewer && _currentView == 'dashboard') {
       _currentView = 'list';
     }
-    final isGuest = user.isViewer || (!user.isAdmin && !_isGloballyReleased);
+    final isGuest = user.isViewer || (!user.isAdmin && !_isGloballyReleased && !user.individualRelease);
 
     final valorTotal = _estatisticas['valor_total'] ?? 0.0;
     final totalItens = _estatisticas['total_itens'] ?? 0;
@@ -554,6 +555,9 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 'settings':
         mainContent = const SettingsScreen();
+        break;
+      case 'logs':
+        mainContent = const LogsScreen();
         break;
       case 'list':
       default:
@@ -764,6 +768,15 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icons.settings_rounded,
               onPressed: () {
                 setState(() => _currentView = 'settings');
+              },
+            ),
+          if (user.isAdmin)
+            _buildSidebarButton(
+              label: 'Logs de Auditoria',
+              isSelected: _currentView == 'logs',
+              icon: Icons.history_rounded,
+              onPressed: () {
+                setState(() => _currentView = 'logs');
               },
             ),
           

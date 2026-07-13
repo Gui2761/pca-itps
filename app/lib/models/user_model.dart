@@ -10,6 +10,7 @@ class User {
   final String name;
   final UserRole role;
   final bool editLocked;
+  final bool individualRelease;
 
   User({
     this.id,
@@ -17,6 +18,7 @@ class User {
     required this.name,
     required this.role,
     this.editLocked = false,
+    this.individualRelease = false,
   });
 
   bool get isAdmin => role == UserRole.admin;
