@@ -14,6 +14,7 @@ import 'dashboard_screen.dart';
 import 'user_management_screen.dart';
 import 'settings_screen.dart';
 import 'logs_screen.dart';
+import 'import_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -1000,23 +1001,49 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 16),
             ],
             if (!isGuest)
-              ElevatedButton.icon(
-                onPressed: () async {
-                  final reload = await Navigator.push<bool>(
-                    context,
-                    MaterialPageRoute(builder: (context) => ItemFormScreen(forcedLaboratorio: _getUserLaboratorio(user))),
-                  );
-                  if (reload == true) _loadData();
-                },
-                icon: const Icon(Icons.add_rounded, size: 20),
-                label: const Text('Novo Item PCA'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3B82F6),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 0,
-                ),
+              Row(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () async {
+                      final reload = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => ImportPlanilhaDialog(
+                          user: user,
+                          currentYear: _selectedYear,
+                          userLaboratorio: _getUserLaboratorio(user),
+                        ),
+                      );
+                      if (reload == true) _loadData();
+                    },
+                    icon: const Icon(Icons.upload_file_rounded, size: 20),
+                    label: const Text('Importar Planilha'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF3B82F6),
+                      side: const BorderSide(color: Color(0xFF3B82F6)),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      final reload = await Navigator.push<bool>(
+                        context,
+                        MaterialPageRoute(builder: (context) => ItemFormScreen(forcedLaboratorio: _getUserLaboratorio(user))),
+                      );
+                      if (reload == true) _loadData();
+                    },
+                    icon: const Icon(Icons.add_rounded, size: 20),
+                    label: const Text('Novo Item PCA'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3B82F6),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      elevation: 0,
+                    ),
+                  ),
+                ],
               ),
           ],
         ),

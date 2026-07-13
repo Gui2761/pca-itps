@@ -374,4 +374,30 @@ class ApiService {
     }
     return false;
   }
+
+  Future<Map<String, dynamic>?> importItems(int ano, String laboratorio, List<int> fileBytes, String fileName) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/api/pca/importar'));
+      if (currentUserRole != null) request.headers['X-User-Role'] = currentUserRole!;
+      if (currentUsername != null) request.headers['X-Username'] = currentUsername!;
+      
+      request.fields['ano'] = ano.toString();
+      request.fields['laboratorio_destino'] = laboratorio;
+      
+      request.files.add(http.MultipartFile.fromBytes('file', fileBytes, filename: fileName));
+      
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+      
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        var body = jsonDecode(response.body);
+        return {'success': false, 'message': body['detail'] ?? 'Erro desconhecido'};
+      }
+    } catch (e) {
+      print('Erro ao importar itens: $e');
+      return {'success': false, 'message': 'Falha na conexão'};
+    }
+  }
 }
