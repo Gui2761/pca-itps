@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/item_pca.dart';
 
 class ApiService {
-  static String baseUrl = 'http://localhost:8000';
+  static String baseUrl = 'http://172.23.6.109:8000';
   static String? currentUserRole;
   static String? currentUsername;
 

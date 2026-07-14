@@ -1010,7 +1010,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => ImportPlanilhaDialog(
                           user: user,
                           currentYear: _selectedYear,
-                          userLaboratorio: _getUserLaboratorio(user),
+                          userLaboratorio: _getUserLaboratorio(user) ?? 'Geral',
                         ),
                       );
                       if (reload == true) _loadData();
