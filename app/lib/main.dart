@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_screen.dart';
 
-import 'package:flutter/foundation.dart';
-
 Future<void> _startBackendIfNeeded() async {
-  if (kIsWeb) return; // Web cannot start the local backend
   try {
     // Verifica se o backend já está rodando
     final client = HttpClient();
