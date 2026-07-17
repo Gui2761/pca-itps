@@ -305,9 +305,7 @@ class _LogsScreenState extends State<LogsScreen> {
                                       Icon(Icons.schedule_rounded, color: const Color(0xFF475569), size: 13),
                                       const SizedBox(width: 6),
                                       Text(
-                                        dataHora.toString().length >= 16
-                                            ? dataHora.toString().substring(0, 16).replaceAll('T', ' ')
-                                            : dataHora.toString(),
+                                        _formatDate(dataHora.toString()),
                                         style: GoogleFonts.jetBrainsMono(
                                           color: const Color(0xFF64748B),
                                           fontSize: 11,
