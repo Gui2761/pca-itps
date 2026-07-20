@@ -20,6 +20,20 @@ class _LogsScreenState extends State<LogsScreen> {
     _fetchLogs();
   }
 
+  String _formatDate(String isoString) {
+    if (isoString.isEmpty) return '';
+    try {
+      final isUTC = isoString.endsWith('Z') ? isoString : '${isoString}Z';
+      final dt = DateTime.parse(isUTC).toLocal();
+      return '${dt.year.toString().padLeft(4, '0')}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')} ${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      if (isoString.length >= 16) {
+        return isoString.substring(0, 16).replaceFirst('T', ' ');
+      }
+      return isoString;
+    }
+  }
+
   Future<void> _fetchLogs() async {
     setState(() => _isLoading = true);
     try {
