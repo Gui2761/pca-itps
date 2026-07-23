@@ -15,6 +15,7 @@ import 'user_management_screen.dart';
 import 'settings_screen.dart';
 import 'logs_screen.dart';
 import 'import_dialog.dart';
+import '../services/update_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -94,6 +95,69 @@ class _HomeScreenState extends State<HomeScreen> {
     _authService.addListener(_onAuthChanged);
     _loadFilterOptions();
     _loadData();
+    _checkForUpdates();
+  }
+
+  Future<void> _checkForUpdates() async {
+    final updateData = await UpdateService.checkForUpdate();
+    if (updateData != null && mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: const Color(0xFF1E293B),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            'Atualização Disponível',
+            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            'Uma nova versão do PCA está disponível (${updateData['tag_name']}). Deseja atualizar agora?',
+            style: GoogleFonts.inter(color: const Color(0xFF94A3B8)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Mais Tarde', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                if (updateData['assets'] != null && updateData['assets'].isNotEmpty) {
+                  _downloadUpdate(updateData['assets'][0]['browser_download_url']);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3B82F6),
+              ),
+              child: Text('Atualizar', style: GoogleFonts.inter(color: Colors.white)),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> _downloadUpdate(String url) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E293B),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(color: Color(0xFF3B82F6)),
+            const SizedBox(height: 16),
+            Text('Baixando e instalando atualização...\nO aplicativo será reiniciado em instantes.', 
+              style: GoogleFonts.inter(color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+    await UpdateService.downloadAndInstallUpdate(url);
   }
 
   @override
