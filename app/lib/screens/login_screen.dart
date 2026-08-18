@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,7 +21,52 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _rememberCredentials = true;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedCredentials();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final remember = prefs.getBool('pca_remember_credentials') ?? true;
+      final savedUser = prefs.getString('pca_saved_username') ?? '';
+      final savedPass = prefs.getString('pca_saved_password') ?? '';
+
+      if (mounted) {
+        setState(() {
+          _rememberCredentials = remember;
+          if (remember) {
+            if (savedUser.isNotEmpty) _usernameController.text = savedUser;
+            if (savedPass.isNotEmpty) _passwordController.text = savedPass;
+          }
+        });
+      }
+    } catch (e) {
+      print('Erro ao carregar credenciais salvas: $e');
+    }
+  }
+
+  Future<void> _saveCredentials(String username, String password) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (_rememberCredentials) {
+        await prefs.setBool('pca_remember_credentials', true);
+        await prefs.setString('pca_saved_username', username.trim());
+        await prefs.setString('pca_saved_password', password);
+      } else {
+        await prefs.setBool('pca_remember_credentials', false);
+        await prefs.remove('pca_saved_username');
+        await prefs.remove('pca_saved_password');
+      }
+    } catch (e) {
+      print('Erro ao salvar credenciais: $e');
+    }
+  }
 
   Future<void> _handleLogin() async {
     setState(() {
@@ -29,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     final success = await widget.authService.login(
-      _usernameController.text,
+      _usernameController.text.trim(),
       _passwordController.text,
     );
 
@@ -39,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if (success) {
+        await _saveCredentials(_usernameController.text.trim(), _passwordController.text);
         widget.onLoginSuccess();
       } else {
         setState(() {
@@ -115,6 +162,39 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: Icons.lock_outline_rounded,
                   isPassword: true,
                 ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 22,
+                      width: 22,
+                      child: Checkbox(
+                        value: _rememberCredentials,
+                        activeColor: const Color(0xFF3B82F6),
+                        checkColor: Colors.white,
+                        side: const BorderSide(color: Color(0xFF64748B), width: 1.5),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                        onChanged: (val) {
+                          setState(() => _rememberCredentials = val ?? true);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() => _rememberCredentials = !_rememberCredentials);
+                      },
+                      child: Text(
+                        'Salvar login e senha neste navegador',
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: const Color(0xFF94A3B8),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 if (_error != null) ...[
                   const SizedBox(height: 16),
                   Text(
@@ -122,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.inter(color: const Color(0xFFEF4444), fontSize: 13, fontWeight: FontWeight.w500),
                   ),
                 ],
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
                 SizedBox(
                   width: double.infinity,
                   height: 56,
