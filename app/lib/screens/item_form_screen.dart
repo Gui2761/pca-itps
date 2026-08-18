@@ -34,7 +34,7 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
   bool _isLoading = false;
 
   List<String> _laboratoriosList = [
-    'Química de Águas',
+    'Química de Água',
     'Inorgânica',
     'Microbiologia',
     'Solos',

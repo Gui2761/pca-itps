@@ -29,7 +29,7 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
   late int _selectedYear;
 
   final List<String> _laboratorios = [
-    'Química de Águas',
+    'Química de Água',
     'Inorgânica',
     'Microbiologia',
     'Solos',

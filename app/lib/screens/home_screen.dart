@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _countdownText = '';
 
   List<String> _laboratorios = [
-    'Química de Águas',
+    'Química de Água',
     'Inorgânica',
     'Microbiologia',
     'Solos',
@@ -181,7 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (user == null || user.isAdmin) return null;
     
     final mapping = {
-      'quimica_aguas': 'Química de Águas',
+      'agua': 'Química de Água',
+      'quimica_aguas': 'Química de Água',
       'inorganica': 'Inorgânica',
       'microbiologia': 'Microbiologia',
       'solos': 'Solos',
@@ -1028,7 +1029,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Row(
           children: [
-            if (!user.isAdmin && !user.editLocked && user.role != UserRole.viewer) ...[
+            if (!user.isAdmin && !user.editLocked && user.role != UserRole.viewer && (_isGloballyReleased || user.individualRelease)) ...[
               ElevatedButton.icon(
                 onPressed: () => _confirmFinalizePlanning(user),
                 icon: const Icon(Icons.check_circle_outline_rounded, size: 20, color: Color(0xFF10B981)),
