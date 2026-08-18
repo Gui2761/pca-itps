@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _selectedCategoria;
   bool _isLoading = false;
   String _currentView = 'list'; // 'dashboard', 'list', 'users', 'settings'
-  int _selectedYear = 2026;
+  int _selectedYear = 2027;
   DateTime? _globalDeadline;
   bool _isGloballyReleased = false;
   Timer? _countdownTimer;

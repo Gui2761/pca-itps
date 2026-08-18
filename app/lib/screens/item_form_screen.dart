@@ -84,7 +84,7 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
     _origemPasta = item?.origemPasta ?? 'Laboratórios';
     if (_origemPasta == 'PCA') _origemPasta = 'Laboratórios';
     _origemArquivoController = TextEditingController(text: item?.origemArquivo ?? 'Inserção Direta');
-    _ano = item?.ano ?? 2026;
+    _ano = item?.ano ?? 2027;
     
     _laboratorio = widget.forcedLaboratorio ?? item?.laboratorio ?? 'GEAAD / Insumos Gerais';
     if (!_laboratoriosList.contains(_laboratorio)) {
