@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/api_service.dart';
+import '../widgets/lab_management_tab.dart';
+import '../widgets/category_management_tab.dart';
+import '../widgets/resource_type_tab.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -13,13 +16,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
   final ApiService _apiService = ApiService();
   late TabController _tabController;
 
-  final TextEditingController _inputController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  List<Map<String, dynamic>> _laboratorios = [];
-  List<Map<String, dynamic>> _categorias = [];
-  List<Map<String, dynamic>> _tiposRecurso = [];
-  
   // Variáveis para prazo de edição global
   DateTime? _globalDeadline;
   bool _isGloballyReleased = false;
@@ -33,29 +29,22 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    _loadAllData();
+    _loadDeadlineData();
   }
 
   @override
   void dispose() {
     _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
-    _inputController.dispose();
     super.dispose();
   }
 
   void _handleTabSelection() {
-    setState(() {}); // Força atualização reativa do painel esquerdo dinâmico!
-    if (_tabController.indexIsChanging) {
-      _inputController.clear();
-    }
+    setState(() {}); // Força atualização reativa
   }
 
-  Future<void> _loadAllData() async {
+  Future<void> _loadDeadlineData() async {
     setState(() => _isLoading = true);
-    final labs = await _apiService.fetchLaboratoriosRaw();
-    final cats = await _apiService.fetchCategoriasRaw();
-    final recursos = await _apiService.fetchTiposRecursoRaw();
     
     // Buscar configuração global de prazos
     final config = await _apiService.fetchGlobalConfig();
@@ -64,132 +53,19 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       deadline = DateTime.tryParse(config['liberacao_fim']);
     }
 
-    setState(() {
-      _laboratorios = labs;
-      _categorias = cats;
-      _tiposRecurso = recursos;
-      _globalDeadline = deadline;
-      _isGloballyReleased = config['is_globally_released'] ?? false;
-      if (deadline != null) {
-        _selectedDate = deadline;
-        _selectedTime = TimeOfDay.fromDateTime(deadline);
-      } else {
-        _selectedDate = null;
-        _selectedTime = null;
-      }
-      _isLoading = false;
-    });
-  }
-
-  Future<void> _addItem() async {
-    if (!_formKey.currentState!.validate()) return;
-    setState(() => _isLoading = true);
-
-    final String nome = _inputController.text.trim();
-    bool success = false;
-
-    if (_tabController.index == 0) {
-      success = await _apiService.createLaboratorio(nome);
-    } else if (_tabController.index == 1) {
-      success = await _apiService.createCategoria(nome);
-    } else if (_tabController.index == 2) {
-      success = await _apiService.createTipoRecurso(nome);
-    }
-
-    if (success) {
-      _inputController.clear();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Parâmetro inserido com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFF059669),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        );
-      }
-      _loadAllData();
-    } else {
-      setState(() => _isLoading = false);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao salvar parâmetro. Verifique duplicados.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFDC2626),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _deleteItem(int id, String nome) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Color(0xFFE2E8F0)),
-        ),
-        title: Text('Confirmar Remoção', style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold)),
-        content: Text('Deseja excluir o registro "$nome"?\n\nEssa alteração afetará novos cadastros.', style: GoogleFonts.inter(color: const Color(0xFF475569))),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFDC2626),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-            child: Text('Excluir', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm == true) {
-      setState(() => _isLoading = true);
-      bool success = false;
-
-      if (_tabController.index == 0) {
-        success = await _apiService.deleteLaboratorio(id);
-      } else if (_tabController.index == 1) {
-        success = await _apiService.deleteCategoria(id);
-      } else if (_tabController.index == 2) {
-        success = await _apiService.deleteTipoRecurso(id);
-      }
-
-      if (success) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Registro removido com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFF059669),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-          );
+    if (mounted) {
+      setState(() {
+        _globalDeadline = deadline;
+        _isGloballyReleased = config['is_globally_released'] ?? false;
+        if (deadline != null) {
+          _selectedDate = deadline;
+          _selectedTime = TimeOfDay.fromDateTime(deadline);
+        } else {
+          _selectedDate = null;
+          _selectedTime = null;
         }
-        _loadAllData();
-      } else {
-        setState(() => _isLoading = false);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Erro ao excluir parâmetro.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFFDC2626),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-          );
-        }
-      }
+        _isLoading = false;
+      });
     }
   }
 
@@ -240,138 +116,65 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
           // Área de Exibição / Formulário e Listagem
           Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Painel Esquerdo Dinâmico
-                Expanded(
-                  flex: 2,
-                  child: _tabController.index == 3
-                      ? _buildDeadlineInstructionsCard()
-                      : _buildParameterFormCard(),
-                ),
-                const SizedBox(width: 32),
+            child: _tabController.index == 3
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Painel Esquerdo Dinâmico
+                      Expanded(
+                        flex: 2,
+                        child: _buildDeadlineInstructionsCard(),
+                      ),
+                      const SizedBox(width: 32),
 
-                // Lista de Registros Ativos Dinâmicos / Painel de Prazo
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.03),
-                          blurRadius: 16,
-                          offset: const Offset(0, 4),
+                      // Lista de Registros Ativos Dinâmicos / Painel de Prazo
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.03),
+                                blurRadius: 16,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Gerenciador de Prazo Global',
+                                style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              const SizedBox(height: 24),
+                              Expanded(
+                                child: _isLoading
+                                    ? const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)))
+                                    : _buildDeadlineConfigPanel(),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _tabController.index == 3 ? 'Gerenciador de Prazo Global' : 'Registros Mapeados no Banco',
-                          style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        const SizedBox(height: 24),
-
-                        Expanded(
-                          child: _isLoading
-                              ? const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)))
-                              : TabBarView(
-                                  controller: _tabController,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  children: [
-                                    _buildParameterList(_laboratorios),
-                                    _buildParameterList(_categorias),
-                                    _buildParameterList(_tiposRecurso),
-                                    _buildDeadlineConfigPanel(),
-                                  ],
-                                ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  )
+                : TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: const [
+                      LabManagementTab(),
+                      CategoryManagementTab(),
+                      ResourceTypeTab(),
+                      SizedBox.shrink(), // Renderizado pelo row acima
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildParameterFormCard() {
-    return Container(
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Inserir Novo Registro',
-              style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            const SizedBox(height: 24),
-            
-            Text(
-              'Digite o nome do parâmetro para cadastrá-lo nas opções de seleção dinâmicas do formulário do PCA.',
-              style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 12, height: 1.4),
-            ),
-            const SizedBox(height: 24),
-
-            TextFormField(
-              controller: _inputController,
-              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
-              validator: (val) => val == null || val.trim().isEmpty ? 'Digite um nome válido' : null,
-              decoration: InputDecoration(
-                hintText: 'Exemplo: Química de Alimentos, Manutenção...',
-                labelText: 'Nome do Parâmetro',
-                labelStyle: GoogleFonts.inter(color: const Color(0xFF334155), fontSize: 13),
-                hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13),
-                fillColor: const Color(0xFFF8FAFC),
-                filled: true,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5)),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _isLoading ? null : _addItem,
-                icon: const Icon(Icons.add_rounded, size: 20),
-                label: const Text('Cadastrar'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2563EB),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 0,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -432,45 +235,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildParameterList(List<Map<String, dynamic>> items) {
-    if (items.isEmpty) {
-      return Center(child: Text('Nenhum parâmetro mapeado nesta categoria.', style: GoogleFonts.inter(color: const Color(0xFF64748B))));
-    }
-
-    return ListView.separated(
-      itemCount: items.length,
-      separatorBuilder: (context, index) => const Divider(color: Color(0xFFF1F5F9)),
-      itemBuilder: (context, index) {
-        final item = items[index];
-        final id = item['id'] as int;
-        final nome = item['nome'] as String;
-
-        return ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEFF6FF),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              '#$id',
-              style: GoogleFonts.outfit(color: const Color(0xFF2563EB), fontWeight: FontWeight.bold, fontSize: 12),
-            ),
-          ),
-          title: Text(
-            nome,
-            style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.w600, fontSize: 14),
-          ),
-          trailing: IconButton(
-            icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFDC2626), size: 20),
-            onPressed: () => _deleteItem(id, nome),
-          ),
-        );
-      },
     );
   }
 
@@ -728,7 +492,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       );
-      _loadAllData();
+      _loadDeadlineData();
     } else {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -785,7 +549,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
         );
-        _loadAllData();
+        _loadDeadlineData();
       } else {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(

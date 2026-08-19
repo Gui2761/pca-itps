@@ -47,6 +47,26 @@ class ApiService {
     return {'itens': <ItemPCA>[], 'estatisticas': {}};
   }
 
+  // Copiar itens de um ano para outro
+  Future<Map<String, dynamic>> copiarAno(int deAno, int paraAno) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/pca/copiar-ano'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'de_ano': deAno, 'para_ano': paraAno}),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return {'success': true, 'message': data['message'] ?? 'Dados copiados com sucesso!'};
+      } else {
+        final err = jsonDecode(response.body);
+        return {'success': false, 'message': err['detail'] ?? 'Erro desconhecido'};
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'Falha na conexão: $e'};
+    }
+  }
+
   // Criar um novo item
   Future<bool> createItem(ItemPCA item) async {
     try {
