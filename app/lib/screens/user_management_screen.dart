@@ -67,7 +67,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Usuário criado com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFF10B981),
+            backgroundColor: const Color(0xFF059669),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -80,7 +80,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Falha ao criar usuário. Tente outro username.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFEF4444),
+            backgroundColor: const Color(0xFFDC2626),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -93,18 +93,26 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF131A2C),
-        title: Text('Confirmar Exclusão', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
-        content: Text('Tem certeza que deseja excluir o usuário "${user['name']}"?', style: GoogleFonts.inter(color: const Color(0xFF94A3B8))),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+        title: Text('Confirmar Exclusão', style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold)),
+        content: Text('Tem certeza que deseja excluir o usuário "${user['name']}"?', style: GoogleFonts.inter(color: const Color(0xFF475569))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
-            child: Text('Excluir', style: GoogleFonts.inter(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text('Excluir', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -118,7 +126,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Usuário excluído com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFF10B981),
+              backgroundColor: const Color(0xFF059669),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -131,7 +139,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao excluir usuário.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFFEF4444),
+              backgroundColor: const Color(0xFFDC2626),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -156,45 +164,33 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              backgroundColor: const Color(0xFF131A2C),
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: Colors.white.withOpacity(0.08)),
+                side: const BorderSide(color: Color(0xFFE2E8F0)),
               ),
-              title: Row(
-                children: [
-                  const Icon(Icons.edit_rounded, color: Color(0xFF3B82F6), size: 24),
-                  const SizedBox(width: 12),
-                  Text(
-                    'Editar Usuário',
-                    style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ],
+              title: Text(
+                'Editar Usuário: ${user['name']}',
+                style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              content: Container(
+              content: SizedBox(
                 width: 450,
                 child: Form(
                   key: editFormKey,
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Editando credenciais de @${user['username']}',
-                          style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13),
-                        ),
-                        const SizedBox(height: 24),
                         TextFormField(
                           controller: nameCtrl,
-                          style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
-                          validator: (val) => val == null || val.isEmpty ? 'Informe o nome completo' : null,
+                          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
+                          validator: (val) => val == null || val.isEmpty ? 'Informe o nome' : null,
                           decoration: _buildInputDecoration('Nome Completo', Icons.person_rounded),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
                           controller: usernameCtrl,
-                          style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                           validator: (val) => val == null || val.isEmpty ? 'Informe o username' : null,
                           decoration: _buildInputDecoration('Usuário (login)', Icons.alternate_email_rounded),
                         ),
@@ -202,14 +198,14 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                         TextFormField(
                           controller: passwordCtrl,
                           obscureText: true,
-                          style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                           decoration: _buildInputDecoration('Nova Senha (deixe vazio para não alterar)', Icons.lock_rounded),
                         ),
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
                           value: selectedRole,
-                          dropdownColor: const Color(0xFF131A2C),
-                          style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                          dropdownColor: Colors.white,
+                          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                           decoration: _buildInputDecoration('Perfil / Nível de Acesso', Icons.security_rounded),
                           items: const [
                             DropdownMenuItem(value: 'viewer', child: Text('Visualizador')),
@@ -220,11 +216,10 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                         ),
                         const SizedBox(height: 20),
                         SwitchListTile(
-                          title: Text('Bloquear Edição do Planejamento', style: GoogleFonts.inter(color: Colors.white, fontSize: 14)),
+                          title: Text('Bloquear Edição do Planejamento', style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14, fontWeight: FontWeight.w600)),
                           subtitle: Text('Quando ativado, o usuário não poderá incluir, alterar ou excluir itens.', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 11)),
                           value: editLocked,
-                          activeColor: const Color(0xFFEF4444),
-                          inactiveTrackColor: const Color(0xFF0B0F19),
+                          activeColor: const Color(0xFFDC2626),
                           onChanged: (val) {
                             setDialogState(() {
                               editLocked = val;
@@ -233,11 +228,10 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                         ),
                         const SizedBox(height: 10),
                         SwitchListTile(
-                          title: Text('Liberação Individual (Pós-Prazo)', style: GoogleFonts.inter(color: Colors.white, fontSize: 14)),
+                          title: Text('Liberação Individual (Pós-Prazo)', style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14, fontWeight: FontWeight.w600)),
                           subtitle: Text('Permite que o usuário edite mesmo se o prazo geral estiver expirado.', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 11)),
                           value: individualRelease,
-                          activeColor: const Color(0xFF10B981),
-                          inactiveTrackColor: const Color(0xFF0B0F19),
+                          activeColor: const Color(0xFF059669),
                           onChanged: (val) {
                             setDialogState(() {
                               individualRelease = val;
@@ -252,7 +246,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+                  child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -260,7 +254,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                     Navigator.pop(context, true);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3B82F6),
+                    backgroundColor: const Color(0xFF2563EB),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -291,7 +285,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Usuário atualizado com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFF10B981),
+              backgroundColor: const Color(0xFF059669),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -304,7 +298,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao atualizar usuário.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFFEF4444),
+              backgroundColor: const Color(0xFFDC2626),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -333,7 +327,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               currentLocked ? 'Acesso do usuário liberado!' : 'Acesso do usuário bloqueado!',
               style: GoogleFonts.inter(fontWeight: FontWeight.w600),
             ),
-            backgroundColor: const Color(0xFF10B981),
+            backgroundColor: const Color(0xFF059669),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -346,7 +340,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erro ao atualizar permissão de acesso.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFEF4444),
+            backgroundColor: const Color(0xFFDC2626),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -375,7 +369,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               !currentReleased ? 'Liberação Individual concedida!' : 'Liberação Individual revogada!',
               style: GoogleFonts.inter(fontWeight: FontWeight.w600),
             ),
-            backgroundColor: const Color(0xFF10B981),
+            backgroundColor: const Color(0xFF059669),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -388,7 +382,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erro ao atualizar liberação individual.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFEF4444),
+            backgroundColor: const Color(0xFFDC2626),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -407,12 +401,12 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           // Header
           Text(
             'Gerenciamento de Acesso',
-            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
+            style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
           ),
           const SizedBox(height: 6),
           Text(
             'Controle de contas, perfis e permissões dos operadores do PCA',
-            style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
+            style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
           ),
           const SizedBox(height: 32),
 
@@ -421,15 +415,22 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Formulário de Criação (Elegante Glass Container)
+                // Formulário de Criação (Elegante White Container)
                 Expanded(
                   flex: 2,
                   child: Container(
                     padding: const EdgeInsets.all(28),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF131A2C).withOpacity(0.8),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.05)),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.03),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: Form(
                       key: _formKey,
@@ -439,14 +440,14 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                           children: [
                             Text(
                               'Criar Novo Usuário',
-                              style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                              style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             const SizedBox(height: 24),
                             
                             // Campo Nome
                             TextFormField(
                               controller: _nameController,
-                              style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                               validator: (val) => val == null || val.isEmpty ? 'Informe o nome completo' : null,
                               decoration: _buildInputDecoration('Nome Completo', Icons.person_rounded),
                             ),
@@ -455,7 +456,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                             // Campo Username
                             TextFormField(
                               controller: _usernameController,
-                              style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                               validator: (val) => val == null || val.isEmpty ? 'Informe o username' : null,
                               decoration: _buildInputDecoration('Usuário (login)', Icons.alternate_email_rounded),
                             ),
@@ -465,7 +466,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                             TextFormField(
                               controller: _passwordController,
                               obscureText: true,
-                              style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                               validator: (val) => val == null || val.isEmpty ? 'Informe a senha' : null,
                               decoration: _buildInputDecoration('Senha', Icons.lock_rounded),
                             ),
@@ -474,8 +475,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                             // Seleção Perfil
                             DropdownButtonFormField<String>(
                               value: _selectedRole,
-                              dropdownColor: const Color(0xFF131A2C),
-                              style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                              dropdownColor: Colors.white,
+                              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
                               decoration: _buildInputDecoration('Perfil / Nível de Acesso', Icons.security_rounded),
                               items: const [
                                 DropdownMenuItem(value: 'viewer', child: Text('Visualizador')),
@@ -493,7 +494,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                 icon: const Icon(Icons.person_add_alt_1_rounded, size: 20),
                                 label: const Text('Salvar Usuário'),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF3B82F6),
+                                  backgroundColor: const Color(0xFF2563EB),
                                   foregroundColor: Colors.white,
                                   padding: const EdgeInsets.symmetric(vertical: 18),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -514,9 +515,16 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                   flex: 3,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF131A2C).withOpacity(0.8),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.05)),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.03),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     padding: const EdgeInsets.all(24),
                     child: Column(
@@ -524,17 +532,17 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                       children: [
                         Text(
                           'Contas Ativas',
-                          style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                          style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         const SizedBox(height: 24),
                         Expanded(
                           child: _isLoading
-                              ? const Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6)))
+                              ? const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)))
                               : _users.isEmpty
                                   ? Center(child: Text('Nenhum usuário mapeado.', style: GoogleFonts.inter(color: const Color(0xFF64748B))))
                                   : ListView.separated(
                                       itemCount: _users.length,
-                                      separatorBuilder: (context, index) => Divider(color: Colors.white.withOpacity(0.05)),
+                                      separatorBuilder: (context, index) => const Divider(color: Color(0xFFF1F5F9)),
                                       itemBuilder: (context, index) {
                                         final user = _users[index];
                                         final isSystemAdmin = user['username'] == 'admin';
@@ -542,15 +550,15 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                         return ListTile(
                                           contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                           leading: CircleAvatar(
-                                            backgroundColor: const Color(0xFF3B82F6).withOpacity(0.12),
+                                            backgroundColor: const Color(0xFFEFF6FF),
                                             child: Text(
                                               user['name'].substring(0, 1).toUpperCase(),
-                                              style: GoogleFonts.outfit(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold),
+                                              style: GoogleFonts.outfit(color: const Color(0xFF2563EB), fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           title: Text(
                                             user['name'],
-                                            style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                            style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 14),
                                           ),
                                           subtitle: Row(
                                             children: [
@@ -569,41 +577,46 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                                     
                                                     String statusText;
                                                     Color badgeColor;
+                                                    Color textColor;
                                                     IconData badgeIcon;
 
                                                     if (isLocked) {
                                                       statusText = 'Terminou (Bloqueado)';
-                                                      badgeColor = const Color(0xFF10B981);
+                                                      badgeColor = const Color(0xFFECFDF5);
+                                                      textColor = const Color(0xFF065F46);
                                                       badgeIcon = Icons.check_circle_rounded;
                                                     } else if (isReleased) {
                                                       statusText = 'Liberado (Individual)';
-                                                      badgeColor = const Color(0xFF8B5CF6);
+                                                      badgeColor = const Color(0xFFF5F3FF);
+                                                      textColor = const Color(0xFF6D28D9);
                                                       badgeIcon = Icons.vpn_key_rounded;
                                                     } else if (!_isGloballyReleased) {
                                                       statusText = 'Bloqueado (Prazo Expirado)';
-                                                      badgeColor = const Color(0xFFEF4444);
+                                                      badgeColor = const Color(0xFFFEF2F2);
+                                                      textColor = const Color(0xFF991B1B);
                                                       badgeIcon = Icons.lock_rounded;
                                                     } else {
                                                       statusText = 'Em Aberto (Liberado)';
-                                                      badgeColor = const Color(0xFF3B82F6);
+                                                      badgeColor = const Color(0xFFEFF6FF);
+                                                      textColor = const Color(0xFF1E40AF);
                                                       badgeIcon = Icons.lock_open_rounded;
                                                     }
 
                                                     return Container(
                                                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                                       decoration: BoxDecoration(
-                                                        color: badgeColor.withOpacity(0.12),
+                                                        color: badgeColor,
                                                         borderRadius: BorderRadius.circular(6),
                                                       ),
                                                       child: Row(
                                                         mainAxisSize: MainAxisSize.min,
                                                         children: [
-                                                          Icon(badgeIcon, color: badgeColor.withOpacity(0.8), size: 10),
+                                                          Icon(badgeIcon, color: textColor, size: 10),
                                                           const SizedBox(width: 4),
                                                           Text(
                                                             statusText,
                                                             style: GoogleFonts.inter(
-                                                              color: badgeColor.withOpacity(0.8),
+                                                              color: textColor,
                                                               fontWeight: FontWeight.bold,
                                                               fontSize: 10,
                                                             ),
@@ -628,8 +641,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                                               ? Icons.lock_open_rounded
                                                               : Icons.lock_rounded,
                                                           color: user['edit_locked'] == true
-                                                              ? const Color(0xFF10B981)
-                                                              : const Color(0xFFF59E0B),
+                                                              ? const Color(0xFF059669)
+                                                              : const Color(0xFFD97706),
                                                           size: 20,
                                                         ),
                                                         tooltip: user['edit_locked'] == true
@@ -644,7 +657,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                                               : Icons.key_rounded,
                                                           color: user['individual_release'] == true
                                                               ? const Color(0xFF8B5CF6)
-                                                              : const Color(0xFF64748B),
+                                                              : const Color(0xFF94A3B8),
                                                           size: 20,
                                                         ),
                                                         tooltip: user['individual_release'] == true
@@ -654,12 +667,12 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                                       ),
                                                     ],
                                                     IconButton(
-                                                      icon: const Icon(Icons.edit_rounded, color: Color(0xFF3B82F6), size: 20),
+                                                      icon: const Icon(Icons.edit_rounded, color: Color(0xFF2563EB), size: 20),
                                                       tooltip: 'Editar Conta',
                                                       onPressed: () => _editUser(user),
                                                     ),
                                                     IconButton(
-                                                      icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFEF4444), size: 20),
+                                                      icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFDC2626), size: 20),
                                                       tooltip: 'Excluir Conta',
                                                       onPressed: () => _deleteUser(user),
                                                     ),
@@ -685,15 +698,15 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     return InputDecoration(
       hintText: hint,
       labelText: hint,
-      labelStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13),
-      hintStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13),
-      prefixIcon: Icon(icon, color: const Color(0xFF64748B), size: 18),
-      fillColor: const Color(0xFF0B0F19).withOpacity(0.5),
+      labelStyle: GoogleFonts.inter(color: const Color(0xFF334155), fontSize: 13),
+      hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13),
+      prefixIcon: Icon(icon, color: const Color(0xFF94A3B8), size: 18),
+      fillColor: const Color(0xFFF8FAFC),
       filled: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.04))),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.04))),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5)),
     );
   }
 
@@ -702,16 +715,16 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     Color textColor;
     String label;
     if (role == 'admin') {
-      color = const Color(0xFFEF4444).withOpacity(0.12);
-      textColor = const Color(0xFFFCA5A5);
+      color = const Color(0xFFFEF2F2);
+      textColor = const Color(0xFF991B1B);
       label = 'Administrador';
     } else if (role == 'editor') {
-      color = const Color(0xFFF59E0B).withOpacity(0.12);
-      textColor = const Color(0xFFFCD34D);
+      color = const Color(0xFFFEF3C7);
+      textColor = const Color(0xFF92400E);
       label = 'Editor';
     } else {
-      color = const Color(0xFF10B981).withOpacity(0.12);
-      textColor = const Color(0xFF6EE7B7);
+      color = const Color(0xFFECFDF5);
+      textColor = const Color(0xFF065F46);
       label = 'Visualizador';
     }
 

@@ -105,20 +105,23 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          backgroundColor: const Color(0xFF1E293B),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: const BorderSide(color: Color(0xFFE2E8F0)),
+          ),
           title: Text(
             'Atualização Disponível',
-            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold),
+            style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold),
           ),
           content: Text(
             'Uma nova versão do PCA está disponível (${updateData['tag_name']}). Deseja atualizar agora?',
-            style: GoogleFonts.inter(color: const Color(0xFF94A3B8)),
+            style: GoogleFonts.inter(color: const Color(0xFF475569)),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Mais Tarde', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+              child: Text('Mais Tarde', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -128,9 +131,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3B82F6),
+                backgroundColor: const Color(0xFF2563EB),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
-              child: Text('Atualizar', style: GoogleFonts.inter(color: Colors.white)),
+              child: Text('Atualizar', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -143,14 +148,18 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircularProgressIndicator(color: Color(0xFF3B82F6)),
+            const CircularProgressIndicator(color: Color(0xFF2563EB)),
             const SizedBox(height: 16),
             Text('Baixando e instalando atualização...\nO aplicativo será reiniciado em instantes.', 
-              style: GoogleFonts.inter(color: Colors.white),
+              style: GoogleFonts.inter(color: const Color(0xFF0F172A)),
               textAlign: TextAlign.center,
             ),
           ],
@@ -297,8 +306,12 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, setDialogState) {
           final isMatch = confirmController.text.trim().toUpperCase() == 'COPIAR';
           return AlertDialog(
-            backgroundColor: const Color(0xFF131A2C),
-            title: Text('Segurança: Confirmar Importação', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: const BorderSide(color: Color(0xFFE2E8F0)),
+            ),
+            title: Text('Segurança: Confirmar Importação', style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,37 +319,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Deseja copiar todos os itens cadastrados no ano de $deAno para o ano de $paraAno?\n\n'
                   'ATENÇÃO: Se já existirem itens cadastrados em $paraAno, eles serão excluídos e substituídos por esta nova cópia.',
-                  style: GoogleFonts.inter(color: const Color(0xFF94A3B8)),
+                  style: GoogleFonts.inter(color: const Color(0xFF475569)),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   'Para autorizar a ação, digite a palavra COPIAR no campo abaixo:',
-                  style: GoogleFonts.inter(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 12, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: confirmController,
-                  style: GoogleFonts.inter(color: Colors.white),
+                  style: GoogleFonts.inter(color: const Color(0xFF0F172A)),
                   onChanged: (val) {
                     setDialogState(() {});
                   },
                   decoration: InputDecoration(
                     hintText: 'COPIAR',
-                    hintStyle: GoogleFonts.inter(color: const Color(0xFF64748B)),
-                    fillColor: const Color(0xFF0B0F19),
+                    hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8)),
+                    fillColor: const Color(0xFFF8FAFC),
                     filled: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+                      borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+                      borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5),
+                      borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5),
                     ),
                   ),
                 ),
@@ -350,10 +363,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 onPressed: isMatch ? () => Navigator.pop(context, true) : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3B82F6),
-                  disabledBackgroundColor: const Color(0xFF1E293B),
+                  backgroundColor: const Color(0xFF2563EB),
+                  disabledBackgroundColor: const Color(0xFFE2E8F0),
                   foregroundColor: Colors.white,
-                  disabledForegroundColor: Colors.white24,
+                  disabledForegroundColor: const Color(0xFF94A3B8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 child: const Text('Confirmar Cópia'),
@@ -413,18 +426,26 @@ class _HomeScreenState extends State<HomeScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF131A2C),
-        title: Text('Confirmar Exclusão', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
-        content: Text('Tem certeza que deseja excluir o item "${item.item}"?', style: GoogleFonts.inter(color: const Color(0xFF94A3B8))),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+        title: Text('Confirmar Exclusão', style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold)),
+        content: Text('Tem certeza que deseja excluir o item "${item.item}"?', style: GoogleFonts.inter(color: const Color(0xFF475569))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
-            child: Text('Excluir', style: GoogleFonts.inter(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text('Excluir', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -587,8 +608,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // Tela de carregamento enquanto SharedPreferences é inicializado
     if (!_authService.isInitialized) {
       return const Scaffold(
-        backgroundColor: Color(0xFF0B0F19),
-        body: Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6))),
+        backgroundColor: Color(0xFFF8FAFC),
+        body: Center(child: CircularProgressIndicator(color: Color(0xFF2563EB))),
       );
     }
 
@@ -654,7 +675,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0F19),
+      backgroundColor: const Color(0xFFF8FAFC),
       body: Row(
         children: [
           // Sidebar
@@ -672,9 +693,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSidebar(User user) {
     return Container(
       width: 280,
-      decoration: BoxDecoration(
-        color: const Color(0xFF131A2C),
-        border: Border(right: BorderSide(color: Colors.white.withOpacity(0.06))),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(right: BorderSide(color: Color(0xFFE2E8F0))),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
       child: SingleChildScrollView(
@@ -689,7 +710,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 44,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF3B82F6), Color(0xFF4F46E5)],
+                    colors: [Color(0xFF2563EB), Color(0xFF4F46E5)],
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -708,9 +729,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       DropdownButtonHideUnderline(
                         child: DropdownButton<int>(
                           value: _selectedYear,
-                          dropdownColor: const Color(0xFF131A2C),
-                          style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: -0.5),
-                          icon: const Icon(Icons.arrow_drop_down, color: Colors.white, size: 20),
+                          dropdownColor: Colors.white,
+                          style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: -0.5),
+                          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF64748B), size: 20),
                           items: [2026, 2027, 2028, 2029, 2030].map((int yr) {
                             return DropdownMenuItem<int>(
                               value: yr,
@@ -730,7 +751,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (user.isAdmin && _selectedYear < 2030) ...[
                         const SizedBox(width: 4),
                         IconButton(
-                          icon: const Icon(Icons.content_copy_rounded, color: Color(0xFF3B82F6), size: 18),
+                          icon: const Icon(Icons.content_copy_rounded, color: Color(0xFF2563EB), size: 18),
                           tooltip: 'Copiar dados de $_selectedYear para ${_selectedYear + 1}',
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -753,17 +774,17 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF0B0F19).withOpacity(0.4),
+              color: const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: const Color(0xFF3B82F6).withOpacity(0.15),
+                  backgroundColor: const Color(0xFFEFF6FF),
                   child: Text(
                     user.name.substring(0, 1).toUpperCase(),
-                    style: GoogleFonts.outfit(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold),
+                    style: GoogleFonts.outfit(color: const Color(0xFF2563EB), fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -773,7 +794,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text(
                         user.name,
-                        style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                        style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 14),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
@@ -795,7 +816,7 @@ class _HomeScreenState extends State<HomeScreen> {
           
           Text(
             'MENU PRINCIPAL',
-            style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1.0),
+            style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1.0),
           ),
           const SizedBox(height: 12),
           
@@ -850,7 +871,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 24),
             Text(
               'FILTRAR POR PLANILHA',
-              style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1.0),
+              style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 11, letterSpacing: 1.0),
             ),
             const SizedBox(height: 12),
             _buildSidebarButton(
@@ -886,16 +907,16 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF0B0F19).withOpacity(0.4),
+              color: const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Banco Central',
-                  style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                  style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 13),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -918,16 +939,16 @@ class _HomeScreenState extends State<HomeScreen> {
     required VoidCallback onPressed,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 6),
       width: double.infinity,
       child: TextButton.icon(
         onPressed: onPressed,
-        icon: Icon(icon, color: isSelected ? Colors.white : const Color(0xFF94A3B8), size: 20),
-        label: Text(label, style: GoogleFonts.inter(color: isSelected ? Colors.white : const Color(0xFF94A3B8), fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal)),
+        icon: Icon(icon, color: isSelected ? const Color(0xFF2563EB) : const Color(0xFF64748B), size: 20),
+        label: Text(label, style: GoogleFonts.inter(color: isSelected ? const Color(0xFF2563EB) : const Color(0xFF475569), fontWeight: isSelected ? FontWeight.bold : FontWeight.w500)),
         style: TextButton.styleFrom(
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          backgroundColor: isSelected ? const Color(0xFF3B82F6) : Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          backgroundColor: isSelected ? const Color(0xFFEFF6FF) : Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
@@ -938,10 +959,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF131A2C),
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.white.withOpacity(0.08)),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
         ),
         title: Row(
           children: [
@@ -949,7 +970,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 12),
             Text(
               'Finalizar Planejamento?',
-              style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+              style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ],
         ),
@@ -957,12 +978,12 @@ class _HomeScreenState extends State<HomeScreen> {
           'Atenção: Ao finalizar, todas as suas alterações do PCA serão salvas e o seu acesso de edição será bloqueado. '
           'Você não poderá criar, alterar ou excluir mais nenhum item, a menos que solicite a reabertura do acesso ao Administrador.\n\n'
           'Deseja concluir o seu planejamento agora?',
-          style: GoogleFonts.inter(color: const Color(0xFF94A3B8), height: 1.5),
+          style: GoogleFonts.inter(color: const Color(0xFF475569), height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Voltar', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+            child: Text('Voltar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -1018,12 +1039,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               'Gerenciamento do PCA',
-              style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
+              style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
             ),
             const SizedBox(height: 6),
             Text(
               'Controle completo de compras, insumos e planejamentos para o ano de 2027',
-              style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
+              style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
             ),
           ],
         ),
@@ -1032,11 +1053,11 @@ class _HomeScreenState extends State<HomeScreen> {
             if (!user.isAdmin && !user.editLocked && user.role != UserRole.viewer && (_isGloballyReleased || user.individualRelease)) ...[
               ElevatedButton.icon(
                 onPressed: () => _confirmFinalizePlanning(user),
-                icon: const Icon(Icons.check_circle_outline_rounded, size: 20, color: Color(0xFF10B981)),
+                icon: const Icon(Icons.check_circle_outline_rounded, size: 20, color: Color(0xFF059669)),
                 label: const Text('Finalizar Planejamento'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF10B981).withOpacity(0.12),
-                  foregroundColor: const Color(0xFF6EE7B7),
+                  backgroundColor: const Color(0xFFECFDF5),
+                  foregroundColor: const Color(0xFF065F46),
                   side: const BorderSide(color: Color(0xFF10B981), width: 1),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1048,17 +1069,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF59E0B).withOpacity(0.12),
+                  color: const Color(0xFFFEF3C7),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFFCD34D), width: 1),
+                  border: Border.all(color: const Color(0xFFF59E0B), width: 1),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.lock_rounded, color: Color(0xFFFCD34D), size: 18),
+                    const Icon(Icons.lock_rounded, color: Color(0xFFB45309), size: 18),
                     const SizedBox(width: 8),
                     Text(
                       'Planejamento Concluído (Edição Bloqueada)',
-                      style: GoogleFonts.inter(color: const Color(0xFFFCD34D), fontWeight: FontWeight.bold, fontSize: 13),
+                      style: GoogleFonts.inter(color: const Color(0xFF92400E), fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                   ],
                 ),
@@ -1083,8 +1104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: const Icon(Icons.upload_file_rounded, size: 20),
                     label: const Text('Importar Planilha'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF3B82F6),
-                      side: const BorderSide(color: Color(0xFF3B82F6)),
+                      foregroundColor: const Color(0xFF2563EB),
+                      side: const BorderSide(color: Color(0xFF2563EB)),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
@@ -1101,7 +1122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: const Icon(Icons.add_rounded, size: 20),
                     label: const Text('Novo Item PCA'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3B82F6),
+                      backgroundColor: const Color(0xFF2563EB),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1122,12 +1143,12 @@ class _HomeScreenState extends State<HomeScreen> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFF3B82F6).withOpacity(0.08),
+          color: const Color(0xFFEFF6FF),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFF3B82F6).withOpacity(0.3), width: 1.5),
+          border: Border.all(color: const Color(0xFF93C5FD), width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF3B82F6).withOpacity(0.05),
+              color: Colors.black.withOpacity(0.03),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -1137,11 +1158,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6).withOpacity(0.15),
+              decoration: const BoxDecoration(
+                color: Color(0xFFDBEAFE),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.timer_outlined, color: Color(0xFF60A5FA), size: 22),
+              child: const Icon(Icons.timer_outlined, color: Color(0xFF2563EB), size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -1150,18 +1171,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     'Período de Edição Liberado Temporariamente',
-                    style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    style: GoogleFonts.inter(color: const Color(0xFF1E40AF), fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
                       Text(
                         'Tempo restante para alterações: ',
-                        style: GoogleFonts.inter(color: const Color(0xFFCBD5E1), fontSize: 12),
+                        style: GoogleFonts.inter(color: const Color(0xFF475569), fontSize: 12),
                       ),
                       Text(
                         _countdownText.isNotEmpty ? _countdownText : 'Calculando...',
-                        style: GoogleFonts.inter(color: const Color(0xFF60A5FA), fontSize: 13, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.inter(color: const Color(0xFF2563EB), fontSize: 13, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -1181,12 +1202,12 @@ class _HomeScreenState extends State<HomeScreen> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFEF4444).withOpacity(0.08),
+        color: const Color(0xFFFEF2F2),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.3), width: 1.5),
+        border: Border.all(color: const Color(0xFFFCA5A5), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFEF4444).withOpacity(0.05),
+            color: Colors.black.withOpacity(0.03),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -1196,11 +1217,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEF4444).withOpacity(0.15),
+            decoration: const BoxDecoration(
+              color: Color(0xFFFEE2E2),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.lock_clock_rounded, color: Color(0xFFF87171), size: 22),
+            child: const Icon(Icons.lock_clock_rounded, color: Color(0xFFDC2626), size: 22),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -1209,13 +1230,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'Período de Edição do PCA Bloqueado',
-                  style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  style: GoogleFonts.inter(color: const Color(0xFF991B1B), fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'O prazo limite de alterações estabelecido pela administração expirou$deadlineStr. '
                   'Caso necessite de liberação especial, solicite ao administrador.',
-                  style: GoogleFonts.inter(color: const Color(0xFFCBD5E1), fontSize: 12, height: 1.4),
+                  style: GoogleFonts.inter(color: const Color(0xFF7F1D1D), fontSize: 12, height: 1.4),
                 ),
               ],
             ),
@@ -1234,7 +1255,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Valor Total Planejado',
             value: valorBrl,
             icon: Icons.monetization_on_rounded,
-            accentColor: const Color(0xFF3B82F6),
+            accentColor: const Color(0xFF2563EB),
           ),
         ),
         const SizedBox(width: 24),
@@ -1259,16 +1280,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: const Color(0xFF131A2C).withOpacity(0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.12),
+              color: accentColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(icon, color: accentColor, size: 28),
@@ -1284,7 +1312,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 8),
               Text(
                 value,
-                style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 28),
+                style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.w800, fontSize: 28),
               ),
             ],
           ),
@@ -1292,15 +1320,21 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _buildTableSection(bool isGuest) {
     final user = _authService.currentUser;
     if (user == null) return const SizedBox.shrink();
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF131A2C).withOpacity(0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -1312,30 +1346,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TextField(
                   controller: _searchController,
                   onChanged: (val) => _loadData(),
-                  style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+                  style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 15),
                   decoration: InputDecoration(
                     hintText: 'Buscar itens por descrição, código ou grupo...',
-                    hintStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
-                    prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF64748B)),
-                    fillColor: const Color(0xFF0B0F19).withOpacity(0.5),
+                    hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
+                    prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF94A3B8)),
+                    fillColor: const Color(0xFFF8FAFC),
                     filled: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.white.withOpacity(0.04)),
+                      borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.white.withOpacity(0.04)),
+                      borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5),
+                      borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5),
                     ),
                   ),
                 ),
               ),
                if (user.isAdmin) ...[
+                const SizedBox(width: 16),
                 _buildDropdownFilter(
                   hint: 'Laboratório',
                   value: _selectedLaboratorio,
@@ -1345,8 +1380,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     _loadData();
                   },
                 ),
-                const SizedBox(width: 16),
               ],
+              const SizedBox(width: 16),
               _buildDropdownFilter(
                 hint: 'Categoria',
                 value: _selectedCategoria,
@@ -1359,33 +1394,33 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 16),
               IconButton(
                 onPressed: _loadData,
-                icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+                icon: const Icon(Icons.refresh_rounded, color: Color(0xFF475569)),
                 style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF0B0F19),
+                  backgroundColor: const Color(0xFFF1F5F9),
                   padding: const EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               // Botão Exportar Excel
               IconButton(
                 tooltip: 'Exportar Excel (CSV)',
                 onPressed: _exportToExcel,
-                icon: const Icon(Icons.table_view_rounded, color: Color(0xFF10B981)),
+                icon: const Icon(Icons.table_view_rounded, color: Color(0xFF059669)),
                 style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF0B0F19),
+                  backgroundColor: const Color(0xFFECFDF5),
                   padding: const EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               // Botão Exportar Relatório
               IconButton(
                 tooltip: 'Exportar Relatório Texto',
                 onPressed: _exportToPDF,
-                icon: const Icon(Icons.picture_as_pdf_rounded, color: Color(0xFFEF4444)),
+                icon: const Icon(Icons.picture_as_pdf_rounded, color: Color(0xFFDC2626)),
                 style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF0B0F19),
+                  backgroundColor: const Color(0xFFFEF2F2),
                   padding: const EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -1397,7 +1432,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Tabela
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6)))
+                ? const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)))
                 : _itens.isEmpty
                     ? Center(
                         child: Text(
@@ -1437,15 +1472,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       columnSpacing: 10,
                                       dataRowMinHeight: 44,
                                       dataRowMaxHeight: 64,
-                                      headingRowColor: WidgetStateProperty.all(const Color(0xFF0B0F19).withOpacity(0.5)),
+                                      headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
                                       columns: [
-                                        DataColumn(label: Container(width: col1Width, child: Text('Origem / Recurso', style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 12)))),
-                                        DataColumn(label: Container(width: col2Width, child: Text('Área / Subgrupo', style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 12)))),
-                                        DataColumn(label: Container(width: col3Width, child: Text('Item / Código', style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 12)))),
-                                        DataColumn(label: Container(width: col4Width, child: Text('Qtd / Unid', style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 12)))),
-                                        DataColumn(numeric: true, label: Container(width: col5Width, alignment: Alignment.centerRight, child: Text('Valor Estimado', style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 12)))),
+                                        DataColumn(label: Container(width: col1Width, child: Text('Origem / Recurso', style: GoogleFonts.inter(color: const Color(0xFF475569), fontWeight: FontWeight.bold, fontSize: 12)))),
+                                        DataColumn(label: Container(width: col2Width, child: Text('Área / Subgrupo', style: GoogleFonts.inter(color: const Color(0xFF475569), fontWeight: FontWeight.bold, fontSize: 12)))),
+                                        DataColumn(label: Container(width: col3Width, child: Text('Item / Código', style: GoogleFonts.inter(color: const Color(0xFF475569), fontWeight: FontWeight.bold, fontSize: 12)))),
+                                        DataColumn(label: Container(width: col4Width, child: Text('Qtd / Unid', style: GoogleFonts.inter(color: const Color(0xFF475569), fontWeight: FontWeight.bold, fontSize: 12)))),
+                                        DataColumn(numeric: true, label: Container(width: col5Width, alignment: Alignment.centerRight, child: Text('Valor Estimado', style: GoogleFonts.inter(color: const Color(0xFF475569), fontWeight: FontWeight.bold, fontSize: 12)))),
                                         if (!isGuest)
-                                          DataColumn(label: Container(width: col6Width, child: Text('Ações', style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.bold, fontSize: 12)))),
+                                          DataColumn(label: Container(width: col6Width, child: Text('Ações', style: GoogleFonts.inter(color: const Color(0xFF475569), fontWeight: FontWeight.bold, fontSize: 12)))),
                                       ],
                                       rows: _itens.map((item) {
                                         return DataRow(
@@ -1475,9 +1510,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Text(item.laboratorio, style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                                    Text(item.laboratorio, style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 12), overflow: TextOverflow.ellipsis, maxLines: 1),
                                                     const SizedBox(height: 3),
-                                                    Text(item.setor, style: GoogleFonts.inter(color: Colors.white60, fontSize: 11), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                                    Text(item.setor, style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 11), overflow: TextOverflow.ellipsis, maxLines: 1),
                                                   ],
                                                 ),
                                               ),
@@ -1497,7 +1532,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ],
                                                     Text(
                                                       item.item,
-                                                      style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+                                                      style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.w500, fontSize: 12),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 2,
                                                     ),
@@ -1514,9 +1549,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Text(item.quantidade.toString(), style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                                                    Text(item.quantidade.toString(), style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 12)),
                                                     const SizedBox(height: 1),
-                                                    Text(item.unidade, style: GoogleFonts.inter(color: Colors.white60, fontSize: 10), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                                    Text(item.unidade, style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 10), overflow: TextOverflow.ellipsis, maxLines: 1),
                                                   ],
                                                 ),
                                               ),
@@ -1530,9 +1565,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment: CrossAxisAlignment.end,
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Text(_formatBrl(item.valorTotal), style: GoogleFonts.inter(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold, fontSize: 12)),
+                                                    Text(_formatBrl(item.valorTotal), style: GoogleFonts.inter(color: const Color(0xFF2563EB), fontWeight: FontWeight.bold, fontSize: 12)),
                                                     const SizedBox(height: 1),
-                                                    Text('Unit: ${_formatBrl(item.valorUnitario)}', style: GoogleFonts.inter(color: Colors.white60, fontSize: 10)),
+                                                    Text('Unit: ${_formatBrl(item.valorUnitario)}', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 10)),
                                                   ],
                                                 ),
                                               ),
@@ -1546,7 +1581,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     mainAxisSize: MainAxisSize.min,
                                                     children: [
                                                       IconButton(
-                                                        icon: const Icon(Icons.edit_rounded, color: Color(0xFF3B82F6), size: 16),
+                                                        icon: const Icon(Icons.edit_rounded, color: Color(0xFF2563EB), size: 16),
                                                         padding: EdgeInsets.zero,
                                                         constraints: const BoxConstraints(),
                                                         onPressed: () async {
@@ -1559,7 +1594,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                       const SizedBox(width: 8),
                                                       IconButton(
-                                                        icon: const Icon(Icons.delete_rounded, color: Color(0xFFEF4444), size: 16),
+                                                        icon: const Icon(Icons.delete_rounded, color: Color(0xFFDC2626), size: 16),
                                                         padding: EdgeInsets.zero,
                                                         constraints: const BoxConstraints(),
                                                         onPressed: () => _deleteItem(item),
@@ -1594,9 +1629,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       width: 225,
       decoration: BoxDecoration(
-        color: const Color(0xFF0B0F19).withOpacity(0.5),
+        color: const Color(0xFFF8FAFC),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: DropdownButtonHideUnderline(
@@ -1605,8 +1640,8 @@ class _HomeScreenState extends State<HomeScreen> {
           isExpanded: true,
           hint: Text(hint, style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13)),
           onChanged: onChanged,
-          dropdownColor: const Color(0xFF131A2C),
-          style: GoogleFonts.inter(color: Colors.white, fontSize: 13),
+          dropdownColor: Colors.white,
+          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 13),
           items: [
             DropdownMenuItem<String>(
               value: null,
@@ -1628,14 +1663,14 @@ class _HomeScreenState extends State<HomeScreen> {
     Color color;
     Color textColor;
     if (pasta == 'Laboratórios') {
-      color = const Color(0xFF3B82F6).withOpacity(0.12);
-      textColor = const Color(0xFF93C5FD);
+      color = const Color(0xFFEFF6FF);
+      textColor = const Color(0xFF1E40AF);
     } else if (pasta == 'GEAAD') {
-      color = const Color(0xFF10B981).withOpacity(0.12);
-      textColor = const Color(0xFF6EE7B7);
+      color = const Color(0xFFECFDF5);
+      textColor = const Color(0xFF065F46);
     } else {
-      color = const Color(0xFF8B5CF6).withOpacity(0.12);
-      textColor = const Color(0xFFC084FC);
+      color = const Color(0xFFF5F3FF);
+      textColor = const Color(0xFF6D28D9);
     }
 
     return Container(
@@ -1656,14 +1691,14 @@ class _HomeScreenState extends State<HomeScreen> {
     Color color;
     Color textColor;
     if (cat == 'Equipamento') {
-      color = const Color(0xFFEF4444).withOpacity(0.12);
-      textColor = const Color(0xFFFCA5A5);
+      color = const Color(0xFFFEF2F2);
+      textColor = const Color(0xFF991B1B);
     } else if (cat == 'Serviço') {
-      color = const Color(0xFFF59E0B).withOpacity(0.12);
-      textColor = const Color(0xFFFCD34D);
+      color = const Color(0xFFFEF3C7);
+      textColor = const Color(0xFF92400E);
     } else {
-      color = const Color(0xFF10B981).withOpacity(0.12);
-      textColor = const Color(0xFF6EE7B7);
+      color = const Color(0xFFECFDF5);
+      textColor = const Color(0xFF065F46);
     }
 
     return Container(

@@ -63,22 +63,25 @@ class PCAApp extends StatelessWidget {
       title: 'Plano de Contratações Anual - ITPS',
       theme: ThemeData(
         useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0B0F19),
-        colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF3B82F6),
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF2563EB),
           secondary: Color(0xFF10B981),
-          surface: Color(0xFF131A2C),
+          surface: Colors.white,
+          background: Color(0xFFF8FAFC),
         ),
         textTheme: GoogleFonts.interTextTheme(
-          ThemeData.dark().textTheme,
+          ThemeData.light().textTheme,
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: const Color(0xFF131A2C),
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xFF0F172A),
           elevation: 0,
           titleTextStyle: GoogleFonts.outfit(
             fontWeight: FontWeight.bold,
             fontSize: 20,
+            color: const Color(0xFF0F172A),
           ),
         ),
       ),

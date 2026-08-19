@@ -200,18 +200,18 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
     final isEdit = widget.item != null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0F19),
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
         title: Text(
           isEdit ? 'Editar Item do PCA' : 'Novo Item do PCA',
-          style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
+          style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 22),
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: const Color(0xFF131A2C),
+        iconTheme: const IconThemeData(color: Color(0xFF0F172A)),
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6)))
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)))
           : SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Center(
@@ -219,14 +219,14 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                   constraints: const BoxConstraints(maxWidth: 800),
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF131A2C).withOpacity(0.85),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: Colors.white.withOpacity(0.08)),
+                    border: Border.all(color: const Color(0xFFE2E8F0)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 32,
-                        offset: const Offset(0, 12),
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 24,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
@@ -237,7 +237,7 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                       children: [
                         Text(
                           isEdit ? 'Atualize as informações do item' : 'Preencha os campos abaixo',
-                          style: GoogleFonts.outfit(color: const Color(0xFF94A3B8), fontSize: 16),
+                          style: GoogleFonts.outfit(color: const Color(0xFF64748B), fontSize: 16),
                         ),
                         const SizedBox(height: 32),
                         Row(
@@ -265,13 +265,13 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                                 children: [
                                   Text(
                                     'Ano do PCA',
-                                    style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.w600, fontSize: 13),
+                                    style: GoogleFonts.inter(color: const Color(0xFF334155), fontWeight: FontWeight.w600, fontSize: 13),
                                   ),
                                   const SizedBox(height: 8),
                                   DropdownButtonFormField<int>(
                                     value: _ano,
-                                    dropdownColor: const Color(0xFF131A2C),
-                                    style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+                                    dropdownColor: Colors.white,
+                                    style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 15),
                                     items: [2026, 2027, 2028, 2029, 2030].map<DropdownMenuItem<int>>((int yr) {
                                       return DropdownMenuItem<int>(
                                         value: yr,
@@ -286,20 +286,20 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                                       }
                                     },
                                     decoration: InputDecoration(
-                                      fillColor: const Color(0xFF0B0F19).withOpacity(0.4),
+                                      fillColor: const Color(0xFFF8FAFC),
                                       filled: true,
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+                                        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+                                        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
-                                        borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5),
+                                        borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5),
                                       ),
                                     ),
                                   ),
@@ -430,9 +430,9 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF0B0F19).withOpacity(0.5),
+                            color: const Color(0xFFEFF6FF),
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white.withOpacity(0.04)),
+                            border: Border.all(color: const Color(0xFFBFDBFE)),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -440,7 +440,7 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                               Text(
                                 'VALOR ESTIMADO TOTAL:',
                                 style: GoogleFonts.inter(
-                                  color: const Color(0xFF94A3B8),
+                                  color: const Color(0xFF1E40AF),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   letterSpacing: 1.0,
@@ -449,7 +449,7 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                               Text(
                                 'R\$ ${_valorTotal.toStringAsFixed(2).replaceAll('.', ',')}',
                                 style: GoogleFonts.outfit(
-                                  color: const Color(0xFF3B82F6),
+                                  color: const Color(0xFF2563EB),
                                   fontWeight: FontWeight.w800,
                                   fontSize: 28,
                                 ),
@@ -461,12 +461,11 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ElevatedButton(
+                            OutlinedButton(
                               onPressed: () => Navigator.pop(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: const Color(0xFF94A3B8),
-                                side: BorderSide(color: Colors.white.withOpacity(0.08)),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: const Color(0xFF64748B),
+                                side: const BorderSide(color: Color(0xFFCBD5E1)),
                                 padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               ),
@@ -476,13 +475,11 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
                             ElevatedButton(
                               onPressed: _saveForm,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF3B82F6),
+                                backgroundColor: const Color(0xFF2563EB),
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 elevation: 0,
-                              ).copyWith(
-                                overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(0.1)),
                               ),
                               child: Row(
                                 children: [
@@ -516,7 +513,7 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.w600, fontSize: 13),
+          style: GoogleFonts.inter(color: const Color(0xFF334155), fontWeight: FontWeight.w600, fontSize: 13),
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -524,24 +521,24 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
           maxLines: maxLines,
           keyboardType: keyboardType,
           validator: validator,
-          style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 15),
           decoration: InputDecoration(
             hintText: placeholder,
-            hintStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
-            fillColor: const Color(0xFF0B0F19).withOpacity(0.4),
+            hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
+            fillColor: const Color(0xFFF8FAFC),
             filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+              borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+              borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5),
+              borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5),
             ),
             errorStyle: GoogleFonts.inter(color: const Color(0xFFEF4444)),
           ),
@@ -561,14 +558,14 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontWeight: FontWeight.w600, fontSize: 13),
+          style: GoogleFonts.inter(color: const Color(0xFF334155), fontWeight: FontWeight.w600, fontSize: 13),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           value: value,
           onChanged: onChanged,
-          dropdownColor: const Color(0xFF131A2C),
-          style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+          dropdownColor: Colors.white,
+          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 15),
           items: items.map<DropdownMenuItem<String>>((String val) {
             return DropdownMenuItem<String>(
               value: val,
@@ -576,20 +573,20 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
             );
           }).toList(),
           decoration: InputDecoration(
-            fillColor: const Color(0xFF0B0F19).withOpacity(0.4),
+            fillColor: const Color(0xFFF8FAFC),
             filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+              borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+              borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5),
+              borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5),
             ),
           ),
         ),

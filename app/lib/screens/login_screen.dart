@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0F19),
+      backgroundColor: const Color(0xFFF8FAFC),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -106,14 +106,14 @@ class _LoginScreenState extends State<LoginScreen> {
             width: 450,
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-              color: const Color(0xFF131A2C).withOpacity(0.85),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.white.withOpacity(0.08)),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
-                  blurRadius: 32,
-                  offset: const Offset(0, 12),
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -123,10 +123,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3B82F6).withOpacity(0.12),
+                    color: const Color(0xFFEFF6FF),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.shield_rounded, size: 44, color: Color(0xFF3B82F6)),
+                  child: const Icon(Icons.shield_rounded, size: 44, color: Color(0xFF2563EB)),
                 ),
                 const SizedBox(height: 24),
                 Text(
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: GoogleFonts.outfit(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: const Color(0xFF0F172A),
                     letterSpacing: -0.5,
                   ),
                 ),
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Plano de Contratações Anual — ITPS',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: const Color(0xFF94A3B8),
+                    color: const Color(0xFF64748B),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -170,9 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 22,
                       child: Checkbox(
                         value: _rememberCredentials,
-                        activeColor: const Color(0xFF3B82F6),
+                        activeColor: const Color(0xFF2563EB),
                         checkColor: Colors.white,
-                        side: const BorderSide(color: Color(0xFF64748B), width: 1.5),
+                        side: const BorderSide(color: Color(0xFFCBD5E1), width: 1.5),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                         onChanged: (val) {
                           setState(() => _rememberCredentials = val ?? true);
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Salvar login e senha neste navegador',
                         style: GoogleFonts.inter(
                           fontSize: 13,
-                          color: const Color(0xFF94A3B8),
+                          color: const Color(0xFF475569),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _handleLogin,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3B82F6),
+                      backgroundColor: const Color(0xFF2563EB),
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       elevation: 0,
@@ -240,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF3B82F6),
+                      color: const Color(0xFF2563EB),
                     ),
                   ),
                 ),
@@ -249,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Credenciais homologadas do ITPS',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: const Color(0xFF64748B),
+                    color: const Color(0xFF94A3B8),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -276,32 +276,32 @@ class _LoginScreenState extends State<LoginScreen> {
           style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF94A3B8),
+            color: const Color(0xFF334155),
           ),
         ),
         const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: isPassword,
-          style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+          style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 15),
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: const Color(0xFF64748B)),
+            prefixIcon: Icon(icon, color: const Color(0xFF94A3B8)),
             hintText: placeholder,
-            hintStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
+            hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
             filled: true,
-            fillColor: const Color(0xFF0B0F19).withOpacity(0.4),
+            fillColor: const Color(0xFFF8FAFC),
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+              borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.06)),
+              borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5),
+              borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5),
             ),
           ),
         ),

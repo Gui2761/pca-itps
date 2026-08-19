@@ -51,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6)));
+      return const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)));
     }
 
     final totalItens = _stats['total_itens'] ?? 0;
@@ -74,20 +74,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   Text(
                     'Dashboard Analítico',
-                    style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
+                    style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     'Consolidado de custos, quantitativos e planejamento estratégico do PCA 2027',
-                    style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
+                    style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
                   ),
                 ],
               ),
               IconButton(
                 onPressed: _loadStats,
-                icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+                icon: const Icon(Icons.refresh_rounded, color: Color(0xFF475569)),
                 style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF131A2C),
+                  backgroundColor: const Color(0xFFF1F5F9),
                   padding: const EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -104,7 +104,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   title: 'Valor Total Planejado',
                   value: _formatBrl(valorTotal),
                   icon: Icons.analytics_rounded,
-                  color: const Color(0xFF3B82F6),
+                  color: const Color(0xFF2563EB),
                   description: 'Total consolidado em compras',
                 ),
               ),
@@ -189,9 +189,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF131A2C).withOpacity(0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -215,7 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(height: 6),
                 Text(
                   value,
-                  style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 24),
+                  style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.w800, fontSize: 24),
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
@@ -235,16 +242,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF131A2C).withOpacity(0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(height: 24),
           Expanded(child: child),
@@ -272,11 +286,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
         Color barColor;
         if (categoria == 'Equipamento') {
-          barColor = const Color(0xFFEF4444);
+          barColor = const Color(0xFFDC2626);
         } else if (categoria == 'Serviço') {
-          barColor = const Color(0xFFF59E0B);
+          barColor = const Color(0xFFD97706);
         } else {
-          barColor = const Color(0xFF10B981);
+          barColor = const Color(0xFF059669);
         }
 
         return Column(
@@ -287,11 +301,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 Text(
                   categoria,
-                  style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 Text(
                   '${_formatBrl(valor)} (${(pct * 100).toStringAsFixed(1)}%)',
-                  style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13),
+                  style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13),
                 ),
               ],
             ),
@@ -301,7 +315,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                   height: 12,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0B0F19),
+                    color: const Color(0xFFF1F5F9),
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
@@ -311,7 +325,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     height: 12,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [barColor, barColor.withOpacity(0.7)],
+                        colors: [barColor, barColor.withOpacity(0.8)],
                       ),
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -340,7 +354,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           Color badgeColor;
           if (pasta == 'Laboratórios') {
-            badgeColor = const Color(0xFF3B82F6);
+            badgeColor = const Color(0xFF2563EB);
           } else if (pasta == 'GEAAD') {
             badgeColor = const Color(0xFF10B981);
           } else {
@@ -351,9 +365,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFF0B0F19).withOpacity(0.4),
+              color: const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withOpacity(0.03)),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
             child: Row(
               children: [
@@ -369,7 +383,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: Text(
                     pasta,
-                    style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13),
+                    style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.w600, fontSize: 13),
                   ),
                 ),
                 Column(
@@ -377,7 +391,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Text(
                       _formatBrl(valor),
-                      style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 13),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -412,9 +426,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: const Color(0xFF0B0F19).withOpacity(0.4),
+            color: const Color(0xFFF8FAFC),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white.withOpacity(0.03)),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
           ),
           child: Row(
             children: [
@@ -422,13 +436,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3B82F6).withOpacity(0.1),
+                  color: const Color(0xFFEFF6FF),
                   shape: BoxShape.circle,
                 ),
                 alignment: Alignment.center,
                 child: Text(
                   lab.substring(0, 1).toUpperCase(),
-                  style: GoogleFonts.outfit(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold, fontSize: 13),
+                  style: GoogleFonts.outfit(color: const Color(0xFF2563EB), fontWeight: FontWeight.bold, fontSize: 13),
                 ),
               ),
               const SizedBox(width: 12),
@@ -438,7 +452,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Text(
                       lab,
-                      style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13),
+                      style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.w600, fontSize: 13),
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
@@ -454,7 +468,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   Text(
                     _formatBrl(valor),
-                    style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                    style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 13),
                   ),
                   const SizedBox(height: 2),
                   Text(

@@ -102,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Parâmetro inserido com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFF10B981),
+            backgroundColor: const Color(0xFF059669),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -115,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erro ao salvar parâmetro. Verifique duplicados.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFEF4444),
+            backgroundColor: const Color(0xFFDC2626),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -128,18 +128,26 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF131A2C),
-        title: Text('Confirmar Exclusão', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
-        content: Text('Tem certeza que deseja excluir "$nome"? Se houver itens associados a este parâmetro, erros de integridade podem ocorrer.', style: GoogleFonts.inter(color: const Color(0xFF94A3B8))),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+        title: Text('Confirmar Remoção', style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold)),
+        content: Text('Deseja excluir o registro "$nome"?\n\nEssa alteração afetará novos cadastros.', style: GoogleFonts.inter(color: const Color(0xFF475569))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
-            child: Text('Excluir', style: GoogleFonts.inter(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text('Excluir', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -161,8 +169,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Parâmetro removido com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFF10B981),
+              content: Text('Registro removido com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+              backgroundColor: const Color(0xFF059669),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -174,8 +182,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erro ao excluir o parâmetro.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-              backgroundColor: const Color(0xFFEF4444),
+              content: Text('Erro ao excluir parâmetro.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+              backgroundColor: const Color(0xFFDC2626),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -194,29 +202,29 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         children: [
           // Header
           Text(
-            'Configurações de Parâmetros',
-            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
+            'Parâmetros e Prazos do Sistema',
+            style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.w800, fontSize: 32, letterSpacing: -0.5),
           ),
           const SizedBox(height: 6),
           Text(
             'Cadastre parâmetros dinâmicos ou estabeleça datas limites para as edições centrais do PCA',
-            style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 14),
+            style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 14),
           ),
           const SizedBox(height: 32),
 
           // Tab Bar de Configurações
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF131A2C).withOpacity(0.5),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: const Color(0xFF3B82F6),
+              indicatorColor: const Color(0xFF2563EB),
               indicatorSize: TabBarIndicatorSize.tab,
               dividerColor: Colors.transparent,
-              labelColor: Colors.white,
+              labelColor: const Color(0xFF2563EB),
               unselectedLabelColor: const Color(0xFF64748B),
               labelStyle: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14),
               unselectedLabelStyle: GoogleFonts.inter(fontSize: 14),
@@ -249,9 +257,16 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                   flex: 3,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF131A2C).withOpacity(0.8),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.05)),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.03),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     padding: const EdgeInsets.all(24),
                     child: Column(
@@ -259,13 +274,13 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                       children: [
                         Text(
                           _tabController.index == 3 ? 'Gerenciador de Prazo Global' : 'Registros Mapeados no Banco',
-                          style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                          style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         const SizedBox(height: 24),
 
                         Expanded(
                           child: _isLoading
-                              ? const Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6)))
+                              ? const Center(child: CircularProgressIndicator(color: Color(0xFF2563EB)))
                               : TabBarView(
                                   controller: _tabController,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -293,9 +308,16 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: const Color(0xFF131A2C).withOpacity(0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Form(
         key: _formKey,
@@ -304,7 +326,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           children: [
             Text(
               'Inserir Novo Registro',
-              style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(height: 24),
             
@@ -316,19 +338,19 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
             TextFormField(
               controller: _inputController,
-              style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontSize: 14),
               validator: (val) => val == null || val.trim().isEmpty ? 'Digite um nome válido' : null,
               decoration: InputDecoration(
                 hintText: 'Exemplo: Química de Alimentos, Manutenção...',
                 labelText: 'Nome do Parâmetro',
-                labelStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13),
-                hintStyle: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13),
-                fillColor: const Color(0xFF0B0F19).withOpacity(0.5),
+                labelStyle: GoogleFonts.inter(color: const Color(0xFF334155), fontSize: 13),
+                hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13),
+                fillColor: const Color(0xFFF8FAFC),
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.04))),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.white.withOpacity(0.04))),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.5)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF2563EB), width: 1.5)),
               ),
             ),
             const SizedBox(height: 24),
@@ -340,7 +362,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                 icon: const Icon(Icons.add_rounded, size: 20),
                 label: const Text('Cadastrar'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3B82F6),
+                  backgroundColor: const Color(0xFF2563EB),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -358,21 +380,28 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: const Color(0xFF131A2C).withOpacity(0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Prazo de Edição do PCA',
-            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(height: 24),
           Text(
             'Como administrador, você pode programar uma data e hora limite para liberar o PCA para todos os setores.',
-            style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13, height: 1.5),
+            style: GoogleFonts.inter(color: const Color(0xFF475569), fontSize: 13, height: 1.5),
           ),
           const SizedBox(height: 16),
           Text(
@@ -384,18 +413,18 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF3B82F6).withOpacity(0.08),
+              color: const Color(0xFFEFF6FF),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF3B82F6).withOpacity(0.2)),
+              border: Border.all(color: const Color(0xFFBFDBFE)),
             ),
             child: Row(
               children: [
-                const Icon(Icons.info_outline_rounded, color: Color(0xFF60A5FA), size: 20),
+                const Icon(Icons.info_outline_rounded, color: Color(0xFF2563EB), size: 20),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     'Selecione uma data e hora no painel à direita e salve para aplicar a liberação temporária.',
-                    style: GoogleFonts.inter(color: const Color(0xFF93C5FD), fontSize: 11, height: 1.4),
+                    style: GoogleFonts.inter(color: const Color(0xFF1E40AF), fontSize: 11, height: 1.4),
                   ),
                 ),
               ],
@@ -413,7 +442,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
     return ListView.separated(
       itemCount: items.length,
-      separatorBuilder: (context, index) => Divider(color: Colors.white.withOpacity(0.05)),
+      separatorBuilder: (context, index) => const Divider(color: Color(0xFFF1F5F9)),
       itemBuilder: (context, index) {
         final item = items[index];
         final id = item['id'] as int;
@@ -424,20 +453,20 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3B82F6).withOpacity(0.08),
+              color: const Color(0xFFEFF6FF),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               '#$id',
-              style: GoogleFonts.outfit(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold, fontSize: 12),
+              style: GoogleFonts.outfit(color: const Color(0xFF2563EB), fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),
           title: Text(
             nome,
-            style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
+            style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.w600, fontSize: 14),
           ),
           trailing: IconButton(
-            icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFEF4444), size: 20),
+            icon: const Icon(Icons.delete_outline_rounded, color: Color(0xFFDC2626), size: 20),
             onPressed: () => _deleteItem(id, nome),
           ),
         );
@@ -451,7 +480,9 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       formattedDeadline = "${_globalDeadline!.day.toString().padLeft(2, '0')}/${_globalDeadline!.month.toString().padLeft(2, '0')}/${_globalDeadline!.year} às ${_globalDeadline!.hour.toString().padLeft(2, '0')}:${_globalDeadline!.minute.toString().padLeft(2, '0')}";
     }
 
-    final statusColor = _isGloballyReleased ? const Color(0xFF10B981) : const Color(0xFFEF4444);
+    final statusColor = _isGloballyReleased ? const Color(0xFF059669) : const Color(0xFFDC2626);
+    final statusBg = _isGloballyReleased ? const Color(0xFFECFDF5) : const Color(0xFFFEF2F2);
+    final statusBorder = _isGloballyReleased ? const Color(0xFFA7F3D0) : const Color(0xFFFECACA);
     final statusText = _isGloballyReleased ? "Edição Liberada Globalmente" : "Edição Bloqueada Globalmente";
     final statusIcon = _isGloballyReleased ? Icons.lock_open_rounded : Icons.lock_rounded;
 
@@ -464,16 +495,16 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.06),
+              color: statusBg,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: statusColor.withOpacity(0.2)),
+              border: Border.all(color: statusBorder),
             ),
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.12),
+                    color: Colors.white,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(statusIcon, color: statusColor, size: 24),
@@ -485,12 +516,12 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                     children: [
                       Text(
                         statusText,
-                        style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                        style: GoogleFonts.inter(color: statusColor, fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Prazo Atual: $formattedDeadline',
-                        style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 13),
+                        style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 13),
                       ),
                     ],
                   ),
@@ -502,7 +533,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
           Text(
             'Configurar Prazo de Expiração',
-            style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+            style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 16),
           ),
           const SizedBox(height: 20),
 
@@ -512,14 +543,14 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
             leading: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6).withOpacity(0.1),
+                color: const Color(0xFFEFF6FF),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.calendar_today_rounded, color: Color(0xFF60A5FA), size: 20),
+              child: const Icon(Icons.calendar_today_rounded, color: Color(0xFF2563EB), size: 20),
             ),
             title: Text(
               'Data Limite',
-              style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 14),
             ),
             subtitle: Text(
               _selectedDate == null ? 'Escolha a data' : '${_selectedDate!.day.toString().padLeft(2, '0')}/${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.year}',
@@ -528,14 +559,15 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
             trailing: ElevatedButton(
               onPressed: _pickDate,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1E293B),
-                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFFF1F5F9),
+                foregroundColor: const Color(0xFF0F172A),
+                elevation: 0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               child: const Text('Selecionar Data'),
             ),
           ),
-          Divider(color: Colors.white.withOpacity(0.05), height: 32),
+          const Divider(color: Color(0xFFF1F5F9), height: 32),
 
           // Seletor de Hora
           ListTile(
@@ -543,14 +575,14 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
             leading: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6).withOpacity(0.1),
+                color: const Color(0xFFEFF6FF),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.access_time_rounded, color: Color(0xFF60A5FA), size: 20),
+              child: const Icon(Icons.access_time_rounded, color: Color(0xFF2563EB), size: 20),
             ),
             title: Text(
               'Hora Limite',
-              style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+              style: GoogleFonts.inter(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 14),
             ),
             subtitle: Text(
               _selectedTime == null ? 'Escolha a hora' : '${_selectedTime!.hour.toString().padLeft(2, '0')}:${_selectedTime!.minute.toString().padLeft(2, '0')}',
@@ -559,14 +591,15 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
             trailing: ElevatedButton(
               onPressed: _pickTime,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1E293B),
-                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFFF1F5F9),
+                foregroundColor: const Color(0xFF0F172A),
+                elevation: 0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               child: const Text('Selecionar Hora'),
             ),
           ),
-          Divider(color: Colors.white.withOpacity(0.05), height: 32),
+          const Divider(color: Color(0xFFF1F5F9), height: 32),
           const SizedBox(height: 16),
 
           // Ações do Formulário
@@ -578,10 +611,11 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                   icon: const Icon(Icons.save_rounded, size: 18),
                   label: const Text('Salvar Prazo'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3B82F6),
+                    backgroundColor: const Color(0xFF2563EB),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    elevation: 0,
                   ),
                 ),
               ),
@@ -592,8 +626,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                   icon: const Icon(Icons.lock_rounded, size: 18),
                   label: const Text('Bloquear Já'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFFEF4444),
-                    side: const BorderSide(color: Color(0xFFEF4444), width: 1.5),
+                    foregroundColor: const Color(0xFFDC2626),
+                    side: const BorderSide(color: Color(0xFFDC2626), width: 1.5),
                     padding: const EdgeInsets.symmetric(vertical: 18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
@@ -615,13 +649,13 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Color(0xFF3B82F6),
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF2563EB),
               onPrimary: Colors.white,
-              surface: Color(0xFF131A2C),
-              onSurface: Colors.white,
+              surface: Colors.white,
+              onSurface: Color(0xFF0F172A),
             ),
-            dialogBackgroundColor: const Color(0xFF0B0F19),
+            dialogBackgroundColor: Colors.white,
           ),
           child: child!,
         );
@@ -641,13 +675,13 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Color(0xFF3B82F6),
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF2563EB),
               onPrimary: Colors.white,
-              surface: Color(0xFF131A2C),
-              onSurface: Colors.white,
+              surface: Colors.white,
+              onSurface: Color(0xFF0F172A),
             ),
-            dialogBackgroundColor: const Color(0xFF0B0F19),
+            dialogBackgroundColor: Colors.white,
           ),
           child: child!,
         );
@@ -665,7 +699,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Por favor, selecione a data e a hora limite.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-          backgroundColor: const Color(0xFFEF4444),
+          backgroundColor: const Color(0xFFDC2626),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -689,7 +723,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Prazo de liberação global salvo com sucesso!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-          backgroundColor: const Color(0xFF10B981),
+          backgroundColor: const Color(0xFF059669),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -700,7 +734,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao salvar prazo no servidor.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-          backgroundColor: const Color(0xFFEF4444),
+          backgroundColor: const Color(0xFFDC2626),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -712,18 +746,26 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF131A2C),
-        title: Text('Bloquear Edição Imediatamente?', style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold)),
-        content: Text('Isto irá encerrar imediatamente o período de alterações do PCA para todos os setores comuns. Deseja prosseguir?', style: GoogleFonts.inter(color: const Color(0xFF94A3B8))),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+        title: Text('Bloquear Edição Imediatamente?', style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold)),
+        content: Text('Isto irá encerrar imediatamente o período de alterações do PCA para todos os setores comuns. Deseja prosseguir?', style: GoogleFonts.inter(color: const Color(0xFF475569))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B))),
+            child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
-            child: Text('Bloquear Agora', style: GoogleFonts.inter(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text('Bloquear Agora', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -738,7 +780,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Edição do PCA bloqueada imediatamente!', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFEF4444),
+            backgroundColor: const Color(0xFFDC2626),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -749,7 +791,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erro ao efetuar bloqueio imediato.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFEF4444),
+            backgroundColor: const Color(0xFFDC2626),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),

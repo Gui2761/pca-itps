@@ -91,24 +91,24 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
         Navigator.pop(context, true); // true = recarregar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response['message'], style: GoogleFonts.inter()),
-            backgroundColor: const Color(0xFF22C55E),
+            content: Text(response['message'], style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            backgroundColor: const Color(0xFF059669),
             duration: const Duration(seconds: 6),
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response['message'] ?? 'Erro desconhecido', style: GoogleFonts.inter()),
-            backgroundColor: const Color(0xFFEF4444),
+            content: Text(response['message'] ?? 'Erro desconhecido', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            backgroundColor: const Color(0xFFDC2626),
           ),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erro de conexão com o servidor.', style: GoogleFonts.inter()),
-          backgroundColor: const Color(0xFFEF4444),
+          content: Text('Erro de conexão com o servidor.', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+          backgroundColor: const Color(0xFFDC2626),
         ),
       );
     }
@@ -117,20 +117,20 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFF131A2C),
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.white.withOpacity(0.06)),
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(color: Color(0xFFE2E8F0)),
       ),
       title: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFF3B82F6).withOpacity(0.15),
+              color: const Color(0xFFEFF6FF),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.upload_file_rounded, color: Color(0xFF3B82F6), size: 24),
+            child: const Icon(Icons.upload_file_rounded, color: Color(0xFF2563EB), size: 24),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -139,7 +139,7 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
               children: [
                 Text(
                   'Importar Planilha',
-                  style: GoogleFonts.outfit(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                  style: GoogleFonts.outfit(color: const Color(0xFF0F172A), fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 Text(
                   'O Agente Antiduplicidade protegerá contra itens repetidos.',
@@ -156,21 +156,21 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Setor de Destino', style: GoogleFonts.inter(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
+            Text('Setor de Destino', style: GoogleFonts.inter(color: const Color(0xFF334155), fontSize: 13, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFF0B0F19),
+                color: const Color(0xFFF8FAFC),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withOpacity(0.06)),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _selectedLab,
                   isExpanded: true,
-                  dropdownColor: const Color(0xFF1E293B),
-                  style: GoogleFonts.inter(color: Colors.white),
+                  dropdownColor: Colors.white,
+                  style: GoogleFonts.inter(color: const Color(0xFF0F172A)),
                   items: _laboratorios.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -188,7 +188,7 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
               ),
             ),
             const SizedBox(height: 20),
-            Text('Arquivo (.xlsx)', style: GoogleFonts.inter(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
+            Text('Arquivo (.xlsx)', style: GoogleFonts.inter(color: const Color(0xFF334155), fontSize: 13, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             InkWell(
               onTap: _isLoading ? null : _pickFile,
@@ -197,10 +197,10 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: _fileBytes == null ? const Color(0xFF0B0F19) : const Color(0xFF22C55E).withOpacity(0.1),
+                  color: _fileBytes == null ? const Color(0xFFF8FAFC) : const Color(0xFFECFDF5),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: _fileBytes == null ? Colors.white.withOpacity(0.06) : const Color(0xFF22C55E).withOpacity(0.3),
+                    color: _fileBytes == null ? const Color(0xFFE2E8F0) : const Color(0xFF10B981),
                     style: BorderStyle.solid,
                   ),
                 ),
@@ -208,15 +208,15 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
                   children: [
                     Icon(
                       _fileBytes == null ? Icons.folder_open_rounded : Icons.check_circle_rounded,
-                      color: _fileBytes == null ? const Color(0xFF64748B) : const Color(0xFF22C55E),
+                      color: _fileBytes == null ? const Color(0xFF64748B) : const Color(0xFF059669),
                       size: 32,
                     ),
                     const SizedBox(height: 12),
                     Text(
                       _fileBytes == null ? 'Clique para selecionar a planilha' : _fileName!,
                       style: GoogleFonts.inter(
-                        color: _fileBytes == null ? const Color(0xFF94A3B8) : const Color(0xFF22C55E),
-                        fontWeight: FontWeight.w500,
+                        color: _fileBytes == null ? const Color(0xFF64748B) : const Color(0xFF065F46),
+                        fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -228,18 +228,18 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFFF59E0B).withOpacity(0.1),
+                color: const Color(0xFFFEF3C7),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFF59E0B).withOpacity(0.2)),
+                border: Border.all(color: const Color(0xFFFDE68A)),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.warning_amber_rounded, color: Color(0xFFF59E0B), size: 16),
+                  const Icon(Icons.warning_amber_rounded, color: Color(0xFFD97706), size: 16),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'A primeira linha deve conter os nomes das colunas: Categoria, Tipo, Código, Item, Unidade, Quantidade, Valor Unitário.',
-                      style: GoogleFonts.inter(color: const Color(0xFFFCD34D), fontSize: 11),
+                      style: GoogleFonts.inter(color: const Color(0xFF92400E), fontSize: 11),
                     ),
                   ),
                 ],
@@ -251,18 +251,19 @@ class _ImportPlanilhaDialogState extends State<ImportPlanilhaDialog> {
       actions: [
         TextButton(
           onPressed: _isLoading ? null : () => Navigator.pop(context, false),
-          child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF94A3B8))),
+          child: Text('Cancelar', style: GoogleFonts.inter(color: const Color(0xFF64748B), fontWeight: FontWeight.w600)),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _importar,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF3B82F6),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            backgroundColor: const Color(0xFF2563EB),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           ),
           child: _isLoading
               ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-              : Text('Importar Dados', style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold)),
+              : Text('Importar Dados', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
         ),
       ],
     );
